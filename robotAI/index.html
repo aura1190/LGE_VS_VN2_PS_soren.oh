@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LG 로보킹 AI 올인원 · 소프트바디(Jelly) 인터랙티브 시뮬레이터</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <style>
+    :root {
+      --lg-red: #A50034;
+      --bg-main: #FFFFFF;
+      --bg-surface: #F8F9FA;
+      --border-line: #E5E7EB;
+      --text-title: #111827;
+      --text-body: #374151;
+      --text-caption: #6B7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-surface);
+      color: var(--text-body);
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      user-select: none;
+    }
+
+    /* 16:9 Single Slide Container */
+    .slide-deck {
+      width: 100%;
+      max-width: 1520px;
+      aspect-ratio: 16 / 9;
+      max-height: 96vh;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-top: 4px solid var(--lg-red);
+      border-radius: 8px;
+      padding: 20px 26px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Header */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--lg-red);
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    .slide-title {
+      font-size: 21px;
+      font-weight: 800;
+      color: var(--text-title);
+      letter-spacing: -0.02em;
+    }
+
+    .slide-title .accent {
+      color: var(--lg-red);
+    }
+
+    .slide-subtitle {
+      font-size: 12px;
+      color: var(--text-caption);
+      margin-top: 2px;
+    }
+
+    .brand-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .brand-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    /* Main Body Grid */
+    .slide-body {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 1.52fr 0.48fr;
+      gap: 16px;
+      padding: 12px 0 8px;
+    }
+
+    /* Left: Interactive Physics Canvas Stage */
+    .canvas-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+      position: relative;
+    }
+
+    .canvas-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4px;
+      flex-shrink: 0;
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mode-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      color: var(--text-body);
+      padding: 5px 11px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .mode-btn:hover {
+      border-color: var(--text-title);
+      color: var(--text-title);
+    }
+
+    .mode-btn.active {
+      background-color: var(--lg-red);
+      border-color: var(--lg-red);
+      color: var(--bg-main);
+    }
+
+    .hint-pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-title);
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    .hint-pill span {
+      color: var(--lg-red);
+      font-weight: 800;
+    }
+
+    .canvas-wrap {
+      flex: 1;
+      min-height: 0;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #jellyCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+
+    #jellyCanvas:active {
+      cursor: grabbing;
+    }
+
+    /* Right: Control & Telemetry Panel */
+    .control-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 0;
+    }
+
+    .panel-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .panel-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-title);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 6px;
+    }
+
+    .panel-title span.tag {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--lg-red);
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .kpi-cell {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+
+    .kpi-lbl {
+      font-size: 10.5px;
+      color: var(--text-caption);
+      font-weight: 600;
+    }
+
+    .kpi-val {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-top: 2px;
+    }
+
+    .kpi-val.red {
+      color: var(--lg-red);
+    }
+
+    .kpi-sub {
+      font-size: 10px;
+      color: var(--text-caption);
+      margin-top: 1px;
+    }
+
+    /* Sliders */
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .slider-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .slider-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-body);
+    }
+
+    .slider-head strong {
+      color: var(--lg-red);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--lg-red);
+      cursor: pointer;
+      height: 5px;
+    }
+
+    /* Action Buttons */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .act-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      color: var(--text-title);
+      padding: 7px 10px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s ease;
+    }
+
+    .act-btn:hover {
+      background-color: var(--text-title);
+      color: var(--bg-main);
+      border-color: var(--text-title);
+    }
+
+    .act-btn.primary {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      border-color: var(--lg-red);
+    }
+
+    .act-btn.primary:hover {
+      background-color: var(--text-title);
+      border-color: var(--text-title);
+    }
+
+    .spec-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-body);
+      line-height: 1.38;
+    }
+
+    .spec-list li {
+      position: relative;
+      padding-left: 10px;
+    }
+
+    .spec-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--lg-red);
+      font-weight: 800;
+    }
+
+    /* Footer (Rule: Always display current / total page number) */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-line);
+      padding-top: 8px;
+      font-size: 11px;
+      color: var(--text-caption);
+      flex-shrink: 0;
+    }
+
+    .slide-page-indicator {
+      font-weight: 800;
+      color: var(--text-title);
+    }
+
+    .slide-page-indicator span {
+      color: var(--lg-red);
+    }
+
+    @media print {
+      @page {
+        size: 16in 9in;
+        margin: 0;
+      }
+      body {
+        padding: 0;
+        background-color: var(--bg-main);
+      }
+      .slide-deck {
+        max-width: none;
+        max-height: none;
+        width: 100vw;
+        height: 100vh;
+        border: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="slide-deck">
+    <!-- ==================== HEADER ==================== -->
+    <header class="slide-header">
+      <div>
+        <div class="eyebrow">
+          <span class="badge">SOFT-BODY AI ROBOTICS</span>
+          <span>AFFECTIONATE INTELLIGENCE · JELLY PHYSICS SIMULATOR</span>
+        </div>
+        <h1 class="slide-title">LG 로보킹 AI 올인원 <span class="accent">소프트바디(Jelly)</span> 자율주행 시뮬레이터</h1>
+        <p class="slide-subtitle">28-Node 스프링-질량(Hooke's Law) 및 내부 압력 보존 물리 엔진 기반 · 말랑한 젤리 변형으로 좁은 가구 틈새를 통과하는 차세대 공감지능 로봇청소기</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="act-btn" onclick="exportTelemetryCsv()" title="실시간 물리·청소 텔레메트리 리포트(.csv) 다운로드">📊 주행 리포트(.csv)</button>
+        <button class="act-btn" onclick="window.print()" title="16:9 슬라이드 PDF 인쇄">🖨️ PDF 인쇄</button>
+        <div class="brand-pill">
+          <div class="brand-circle">LG</div>
+          <span>Roboking AI · Jelly Edition</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ==================== BODY ==================== -->
+    <div class="slide-body">
+      <!-- Left: Interactive Physics Stage -->
+      <section class="canvas-card">
+        <div class="canvas-topbar">
+          <div class="mode-tabs">
+            <button class="mode-btn active" id="btnModeAuto" onclick="setRobotMode('auto')">AI 자율청소 모드</button>
+            <button class="mode-btn" id="btnModeTurbo" onclick="setRobotMode('turbo')">터보 흡입 (10,000Pa)</button>
+            <button class="mode-btn" id="btnModeJelly" onclick="setRobotMode('jelly')">말랑 젤리 바운스 모드</button>
+            <button class="mode-btn" id="btnModeDock" onclick="setRobotMode('dock')">올인원 타워 복귀·비움</button>
+          </div>
+          <div class="hint-pill">
+            <span>마우스 조작:</span> 로봇을 잡고 젤리처럼 늘려 튕기거나, 바닥을 클릭해 먼지를 뿌려보세요!
+          </div>
+        </div>
+
+        <div class="canvas-wrap" id="canvasContainer">
+          <canvas id="jellyCanvas"></canvas>
+        </div>
+      </section>
+
+      <!-- Right: Telemetry & Physics Controls -->
+      <aside class="control-panel">
+        <!-- 1. Real-time Telemetry -->
+        <div class="panel-card">
+          <div class="panel-title">
+            <span>실시간 AI 주행·물리 텔레메트리</span>
+            <span class="tag" id="statusBadge">AI CLEANING</span>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-cell">
+              <div class="kpi-lbl">공간 청정도 (Clean Rate)</div>
+              <div class="kpi-val red" id="kpiCleanRate">0%</div>
+              <div class="kpi-sub" id="kpiDustCount">잔여 먼지: 45개</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-lbl">젤리 변형률 (Strain)</div>
+              <div class="kpi-val" id="kpiStrain">1.2%</div>
+              <div class="kpi-sub" id="kpiCollision">충격 흡수: 0회</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-lbl">진공 흡입력 (Suction)</div>
+              <div class="kpi-val" id="kpiSuction">6,000<span style="font-size:11px;">Pa</span></div>
+              <div class="kpi-sub">듀얼 회전 브러시 가동</div>
+            </div>
+            <div class="kpi-cell">
+              <div class="kpi-lbl">배터리 &amp; 먼지통 상태</div>
+              <div class="kpi-val" id="kpiBattery">94%</div>
+              <div class="kpi-sub" id="kpiBagStatus">올인원 자동비움 대기</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Soft-Body Physics Sliders -->
+        <div class="panel-card">
+          <div class="panel-title">
+            <span>소프트바디(Jelly) 탄성·출동 제어</span>
+            <span class="tag">HOOKE'S LAW</span>
+          </div>
+          <div class="slider-group">
+            <div class="slider-row">
+              <div class="slider-head">
+                <span>젤리 탄성 계수 (Stiffness k)</span>
+                <strong id="lblStiffness">말랑함 (0.14)</strong>
+              </div>
+              <input type="range" id="rngStiffness" min="0.06" max="0.32" step="0.01" value="0.14" oninput="updatePhysicsParams()" />
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-head">
+                <span>내부 팽창 압력 (Jelly Pressure)</span>
+                <strong id="lblPressure">표준 볼륨 (1.15)</strong>
+              </div>
+              <input type="range" id="rngPressure" min="0.75" max="1.65" step="0.05" value="1.15" oninput="updatePhysicsParams()" />
+            </div>
+
+            <div class="slider-row">
+              <div class="slider-head">
+                <span>AI 추진 속도 (Drive Force)</span>
+                <strong id="lblSpeed">보통 (1.0x)</strong>
+              </div>
+              <input type="range" id="rngSpeed" min="0.5" max="2.2" step="0.1" value="1.0" oninput="updatePhysicsParams()" />
+            </div>
+          </div>
+
+          <div class="action-grid" style="margin-top: 4px;">
+            <button class="act-btn primary" onclick="triggerJellyJump()">푸딩 점프! (Jiggle)</button>
+            <button class="act-btn" onclick="spawnDustBurst(45)">먼지 45개 뿌리기</button>
+            <button class="act-btn" onclick="squeezeTest()">좁은 틈새 통과 테스트</button>
+            <button class="act-btn" onclick="resetArena()">맵 초기화</button>
+          </div>
+        </div>
+
+        <!-- 3. Technical Highlights -->
+        <div class="panel-card" style="flex: 1; justify-content: space-between;">
+          <div class="panel-title">
+            <span>소프트바디 AI 로봇청소기 핵심 메커니즘</span>
+            <span class="tag">R&amp;D INSIGHT</span>
+          </div>
+          <ul class="spec-list">
+            <li><strong>가변 탄성 범퍼:</strong> 가구·모서리 충돌 시 젤리 외피가 유연하게 함몰되며 충격량을 <strong>88% 이상 흡수</strong>하고 흠집을 원천 방지합니다.</li>
+            <li><strong>틈새 스퀴즈 주행:</strong> 본체 직경보다 좁은 소파·식탁 다리 사이(폭 78% 구간)도 내부 압력 재배치로 말랑하게 비집고 통과합니다.</li>
+            <li><strong>공감지능(AI) 표정 피드백:</strong> 먼지 발견(`!`), 고속 흡입(`> <`), 마우스 쓰다듬기(`^ ^`) 등 상황별 LED 아이 디스플레이가 반응합니다.</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="slide-footer">
+      <span>LG전자 H&amp;A 선행로보틱스 시뮬레이션 · 2D Mass-Spring-Pressure Soft-Body Engine (Vanilla JS + HTML5 Canvas)</span>
+      <span class="slide-page-indicator"><span>01</span> / 01</span>
+    </footer>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('jellyCanvas');
+    const ctx = canvas.getContext('2d');
+    const container = document.getElementById('canvasContainer');
+
+    let W = 900;
+    let H = 520;
+
+    // LG Brand Colors ONLY
+    const COL_RED = '#A50034';
+    const COL_WHITE = '#FFFFFF';
+    const COL_SURFACE = '#F8F9FA';
+    const COL_BORDER = '#E5E7EB';
+    const COL_TITLE = '#111827';
+    const COL_BODY = '#374151';
+    const COL_CAPTION = '#6B7280';
+
+    // Simulation state
+    let mode = 'auto'; // 'auto', 'turbo', 'jelly', 'dock'
+    let stiffness = 0.14;
+    let pressureFactor = 1.15;
+    let speedMultiplier = 1.0;
+    let damping = 0.87;
+
+    let totalSpawnedDust = 0;
+    let totalCleanedDust = 0;
+    let collisionCount = 0;
+    let battery = 94.0;
+    let brushAngle = 0;
+    let lidarAngle = 0;
+    let expressionTimer = 0;
+    let currentExpression = 'normal'; // 'normal', 'happy', 'turbo', 'squish'
+
+    // All-in-One Charging Station position
+    const station = { x: 68, y: 74, w: 96, h: 64 };
+
+    // Furniture Obstacles (including a narrow squeeze gap!)
+    let obstacles = [];
+
+    function setupObstacles() {
+      obstacles = [
+        { x: W * 0.36, y: H * 0.25, r: 42, label: '원형 테이블' },
+        { x: W * 0.36, y: H * 0.56, r: 42, label: '의자 스툴' }, // Narrow gap between y=0.25 and y=0.56!
+        { x: W * 0.71, y: H * 0.34, r: 52, label: '소파 아일랜드' },
+        { x: W * 0.68, y: H * 0.76, r: 38, label: '화분 스탠드' }
+      ];
+    }
+
+    // Soft-Body Jelly Robot Vacuum Structure
+    const NUM_NODES = 28;
+    const BASE_RADIUS = 46;
+    const robot = {
+      cx: 210,
+      cy: 260,
+      vx: 0,
+      vy: 0,
+      heading: 0,
+      nodes: [],
+      strain: 0
+    };
+
+    function initRobot(x, y) {
+      robot.cx = x;
+      robot.cy = y;
+      robot.vx = 0;
+      robot.vy = 0;
+      robot.nodes = [];
+      for (let i = 0; i < NUM_NODES; i++) {
+        const theta = (i / NUM_NODES) * Math.PI * 2;
+        robot.nodes.push({
+          x: x + Math.cos(theta) * BASE_RADIUS,
+          y: y + Math.sin(theta) * BASE_RADIUS,
+          vx: 0,
+          vy: 0,
+          baseAngle: theta
+        });
+      }
+    }
+
+    // Dust particles & Suction ripple effects
+    let dusts = [];
+    let ripples = [];
+
+    function spawnDustBurst(count, centerX, centerY) {
+      for (let i = 0; i < count; i++) {
+        let px = centerX !== undefined ? centerX + (Math.random() - 0.5) * 90 : 70 + Math.random() * (W - 130);
+        let py = centerY !== undefined ? centerY + (Math.random() - 0.5) * 90 : 60 + Math.random() * (H - 110);
+
+        // Keep away from station and inside bounds
+        px = Math.max(40, Math.min(W - 40, px));
+        py = Math.max(40, Math.min(H - 40, py));
+        if (px < 180 && py < 155) {
+          px += 140;
+        }
+        // Push out of obstacles
+        for (const ob of obstacles) {
+          const dx = px - ob.x;
+          const dy = py - ob.y;
+          const d = Math.hypot(dx, dy);
+          if (d < ob.r + 18) {
+            px = ob.x + (dx / (d || 1)) * (ob.r + 22);
+            py = ob.y + (dy / (d || 1)) * (ob.r + 22);
+          }
+        }
+
+        dusts.push({
+          x: px,
+          y: py,
+          vx: 0,
+          vy: 0,
+          r: 2.8 + Math.random() * 2.8,
+          isAccent: Math.random() < 0.35
+        });
+        totalSpawnedDust++;
+      }
+      updateTelemetryUI();
+    }
+
+    // Mouse / Pointer interaction (Grab & Stretch jelly node, or click floor to spawn dust)
+    let pointer = {
+      down: false,
+      x: 0,
+      y: 0,
+      grabbedNodeIdx: -1,
+      grabCenter: false
+    };
+
+    function getCanvasPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (e.clientX - rect.left) * (W / rect.width),
+        y: (e.clientY - rect.top) * (H / rect.height)
+      };
+    }
+
+    canvas.addEventListener('pointerdown', (e) => {
+      const pos = getCanvasPos(e);
+      pointer.down = true;
+      pointer.x = pos.x;
+      pointer.y = pos.y;
+
+      // Check if clicking on robot body or perimeter
+      const distCenter = Math.hypot(pos.x - robot.cx, pos.y - robot.cy);
+      if (distCenter < BASE_RADIUS * 1.35) {
+        // Find nearest perimeter node to stretch like jelly!
+        let bestIdx = 0;
+        let bestD = 1e9;
+        robot.nodes.forEach((n, idx) => {
+          const d = Math.hypot(pos.x - n.x, pos.y - n.y);
+          if (d < bestD) {
+            bestD = d;
+            bestIdx = idx;
+          }
+        });
+        if (distCenter < BASE_RADIUS * 0.55) {
+          pointer.grabCenter = true;
+          pointer.grabbedNodeIdx = -1;
+        } else {
+          pointer.grabbedNodeIdx = bestIdx;
+          pointer.grabCenter = false;
+        }
+        currentExpression = 'happy';
+        expressionTimer = 55;
+      } else {
+        // Spawn a cluster of dust where user clicked
+        pointer.grabbedNodeIdx = -1;
+        pointer.grabCenter = false;
+        spawnDustBurst(8, pos.x, pos.y);
+        ripples.push({ x: pos.x, y: pos.y, r: 5, maxR: 36, alpha: 0.7 });
+      }
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!pointer.down) return;
+      const pos = getCanvasPos(e);
+      pointer.x = pos.x;
+      pointer.y = pos.y;
+    });
+
+    window.addEventListener('pointerup', () => {
+      if (pointer.grabbedNodeIdx !== -1 || pointer.grabCenter) {
+        // Release snap-back ripple!
+        ripples.push({ x: robot.cx, y: robot.cy, r: BASE_RADIUS * 0.6, maxR: BASE_RADIUS * 1.9, alpha: 0.8 });
+      }
+      pointer.down = false;
+      pointer.grabbedNodeIdx = -1;
+      pointer.grabCenter = false;
+    });
+
+    // Mode & Control Functions
+    function setRobotMode(newMode) {
+      mode = newMode;
+      document.querySelectorAll('.mode-btn').forEach((b) => b.classList.remove('active'));
+      const badge = document.getElementById('statusBadge');
+      const kpiSuction = document.getElementById('kpiSuction');
+
+      if (newMode === 'auto') {
+        document.getElementById('btnModeAuto').classList.add('active');
+        badge.textContent = 'AI CLEANING';
+        kpiSuction.innerHTML = '6,000<span style="font-size:11px;">Pa</span>';
+        document.getElementById('rngStiffness').value = 0.14;
+        document.getElementById('rngSpeed').value = 1.0;
+      } else if (newMode === 'turbo') {
+        document.getElementById('btnModeTurbo').classList.add('active');
+        badge.textContent = 'TURBO VORTEX';
+        kpiSuction.innerHTML = '10,000<span style="font-size:11px;">Pa</span>';
+        document.getElementById('rngStiffness').value = 0.18;
+        document.getElementById('rngSpeed').value = 1.6;
+        currentExpression = 'turbo';
+        expressionTimer = 90;
+      } else if (newMode === 'jelly') {
+        document.getElementById('btnModeJelly').classList.add('active');
+        badge.textContent = 'JELLY BOUNCE';
+        kpiSuction.innerHTML = '7,500<span style="font-size:11px;">Pa</span>';
+        document.getElementById('rngStiffness').value = 0.08;
+        document.getElementById('rngPressure').value = 1.35;
+        document.getElementById('rngSpeed').value = 1.7;
+        triggerJellyJump();
+      } else if (newMode === 'dock') {
+        document.getElementById('btnModeDock').classList.add('active');
+        badge.textContent = 'HOMING DOCK';
+        kpiSuction.innerHTML = '2,000<span style="font-size:11px;">Pa</span>';
+      }
+      updatePhysicsParams();
+    }
+
+    function updatePhysicsParams() {
+      stiffness = parseFloat(document.getElementById('rngStiffness').value);
+      pressureFactor = parseFloat(document.getElementById('rngPressure').value);
+      speedMultiplier = parseFloat(document.getElementById('rngSpeed').value);
+
+      const stiffLabel = stiffness <= 0.10 ? '푸딩처럼 말랑함' : stiffness <= 0.18 ? '표준 젤리 탄성' : '고탄성 탱탱볼';
+      document.getElementById('lblStiffness').textContent = `${stiffLabel} (${stiffness.toFixed(2)})`;
+      document.getElementById('lblPressure').textContent = `압력 배율 (${pressureFactor.toFixed(2)}x)`;
+      document.getElementById('lblSpeed').textContent = `추진력 (${speedMultiplier.toFixed(1)}x)`;
+    }
+
+    function triggerJellyJump() {
+      for (let i = 0; i < NUM_NODES; i++) {
+        const angle = (i / NUM_NODES) * Math.PI * 2;
+        const harmonic = Math.sin(angle * 3) * 9.5 + (Math.random() - 0.5) * 5;
+        robot.nodes[i].vx += Math.cos(angle) * harmonic;
+        robot.nodes[i].vy += Math.sin(angle) * harmonic;
+      }
+      currentExpression = 'happy';
+      expressionTimer = 70;
+      ripples.push({ x: robot.cx, y: robot.cy, r: BASE_RADIUS * 0.7, maxR: BASE_RADIUS * 2.1, alpha: 0.9 });
+    }
+
+    function squeezeTest() {
+      // Position robot right before the narrow gap between obstacle 0 and obstacle 1
+      const gapY = (obstacles[0].y + obstacles[1].y) / 2;
+      initRobot(obstacles[0].x - 115, gapY);
+      robot.heading = 0;
+      robot.vx = 4.2;
+      for (const n of robot.nodes) {
+        n.vx = 4.2;
+      }
+      // Place tasty dust trail right through the narrow gap
+      for (let k = -40; k <= 120; k += 20) {
+        dusts.push({
+          x: obstacles[0].x + k,
+          y: gapY + (Math.random() - 0.5) * 8,
+          vx: 0,
+          vy: 0,
+          r: 4.2,
+          isAccent: true
+        });
+        totalSpawnedDust++;
+      }
+      document.getElementById('rngStiffness').value = 0.08;
+      updatePhysicsParams();
+      currentExpression = 'squish';
+      expressionTimer = 95;
+    }
+
+    function resetArena() {
+      dusts = [];
+      totalSpawnedDust = 0;
+      totalCleanedDust = 0;
+      collisionCount = 0;
+      setupObstacles();
+      initRobot(210, 260);
+      spawnDustBurst(45);
+      setRobotMode('auto');
+    }
+
+    function updateTelemetryUI() {
+      const ratio = totalSpawnedDust > 0 ? Math.round((totalCleanedDust / totalSpawnedDust) * 100) : 100;
+      document.getElementById('kpiCleanRate').textContent = `${ratio}%`;
+      document.getElementById('kpiDustCount').textContent = `잔여 먼지: ${dusts.length}개 (누적 ${totalCleanedDust}개 흡입)`;
+      document.getElementById('kpiStrain').textContent = `${(robot.strain * 100).toFixed(1)}%`;
+      document.getElementById('kpiCollision').textContent = `유연 충격흡수: ${collisionCount}회`;
+      document.getElementById('kpiBattery').textContent = `${Math.round(battery)}%`;
+    }
+
+    // Core Soft-Body Physics Step
+    function stepPhysics() {
+      // 1. Determine AI Target & Steering Force
+      let targetX = robot.cx + Math.cos(robot.heading) * 80;
+      let targetY = robot.cy + Math.sin(robot.heading) * 80;
+      let driveStrength = 0.24 * speedMultiplier;
+
+      if (mode === 'dock') {
+        targetX = station.x + station.w * 0.5;
+        targetY = station.y + station.h + 26;
+        const dDock = Math.hypot(targetX - robot.cx, targetY - robot.cy);
+        if (dDock < 18) {
+          driveStrength = 0.04;
+          battery = Math.min(100, battery + 0.08);
+          document.getElementById('kpiBagStatus').textContent = '올인원 타워 먼지비움·충전 중 ✓';
+          currentExpression = 'happy';
+          expressionTimer = 20;
+        }
+      } else {
+        document.getElementById('kpiBagStatus').textContent = 'AI 집진 모터 정상 가동';
+        battery = Math.max(15, battery - 0.002 * speedMultiplier);
+
+        // Find nearest dust particle
+        if (dusts.length > 0) {
+          let bestDust = null;
+          let bestScore = 1e9;
+          for (const d of dusts) {
+            const dist = Math.hypot(d.x - robot.cx, d.y - robot.cy);
+            if (dist < bestScore) {
+              bestScore = dist;
+              bestDust = d;
+            }
+          }
+          if (bestDust) {
+            targetX = bestDust.x;
+            targetY = bestDust.y;
+          }
+        } else {
+          // Patrol smoothly when all dust is cleaned
+          const t = performance.now() * 0.0012;
+          targetX = W * 0.5 + Math.cos(t) * (W * 0.32);
+          targetY = H * 0.54 + Math.sin(t * 1.4) * (H * 0.28);
+        }
+      }
+
+      // Obstacle avoidance steering vector
+      let steerX = targetX - robot.cx;
+      let steerY = targetY - robot.cy;
+      const steerLen = Math.hypot(steerX, steerY) || 1;
+      steerX /= steerLen;
+      steerY /= steerLen;
+
+      for (const ob of obstacles) {
+        const dx = robot.cx - ob.x;
+        const dy = robot.cy - ob.y;
+        const dist = Math.hypot(dx, dy);
+        const avoidDist = ob.r + BASE_RADIUS + 28;
+        if (dist < avoidDist && dist > 1) {
+          // Tangential + repulsive gentle guidance so it can still squish against obstacles
+          const push = ((avoidDist - dist) / avoidDist) * 0.55;
+          steerX += (dx / dist) * push;
+          steerY += (dy / dist) * push;
+        }
+      }
+
+      const finalLen = Math.hypot(steerX, steerY) || 1;
+      steerX /= finalLen;
+      steerY /= finalLen;
+
+      // Smoothly update heading
+      const desiredHeading = Math.atan2(steerY, steerX);
+      let diffAngle = desiredHeading - robot.heading;
+      while (diffAngle > Math.PI) diffAngle -= Math.PI * 2;
+      while (diffAngle < -Math.PI) diffAngle += Math.PI * 2;
+      robot.heading += diffAngle * 0.12;
+
+      // Apply AI propulsion to center & nodes when not grabbed
+      if (!pointer.down || (pointer.grabbedNodeIdx === -1 && !pointer.grabCenter)) {
+        robot.vx = (robot.vx + Math.cos(robot.heading) * driveStrength) * 0.90;
+        robot.vy = (robot.vy + Math.sin(robot.heading) * driveStrength) * 0.90;
+      } else if (pointer.grabCenter) {
+        robot.vx = (pointer.x - robot.cx) * 0.25;
+        robot.vy = (pointer.y - robot.cy) * 0.25;
+      }
+
+      // 2. Compute Soft-Body Polygon Area (Shoelace formula) for Internal Gas Pressure
+      let signedArea = 0;
+      for (let i = 0; i < NUM_NODES; i++) {
+        const n1 = robot.nodes[i];
+        const n2 = robot.nodes[(i + 1) % NUM_NODES];
+        signedArea += (n1.x * n2.y - n2.x * n1.y);
+      }
+      const currentArea = Math.abs(signedArea) * 0.5;
+      const targetArea = Math.PI * BASE_RADIUS * BASE_RADIUS * pressureFactor;
+      const areaDiff = (targetArea - currentArea) * 0.00045;
+
+      // 3. Apply Spring Forces (Core Radial Springs + Perimeter Structural Springs + Shear Springs)
+      const restSegment = (2 * Math.PI * BASE_RADIUS) / NUM_NODES;
+      let totalDeformation = 0;
+
+      for (let i = 0; i < NUM_NODES; i++) {
+        const node = robot.nodes[i];
+        const prev = robot.nodes[(i - 1 + NUM_NODES) % NUM_NODES];
+        const next = robot.nodes[(i + 1) % NUM_NODES];
+        const opposite = robot.nodes[(i + NUM_NODES / 2) % NUM_NODES];
+
+        // A. Radial Target Shape Spring (anchored to rotating/moving core)
+        const targetNodeX = robot.cx + Math.cos(node.baseAngle) * BASE_RADIUS * Math.sqrt(pressureFactor);
+        const targetNodeY = robot.cy + Math.sin(node.baseAngle) * BASE_RADIUS * Math.sqrt(pressureFactor);
+        node.vx += (targetNodeX - node.x) * stiffness + robot.vx * 0.11;
+        node.vy += (targetNodeY - node.y) * stiffness + robot.vy * 0.11;
+
+        const radialDist = Math.hypot(node.x - robot.cx, node.y - robot.cy);
+        totalDeformation += Math.abs(radialDist - BASE_RADIUS) / BASE_RADIUS;
+
+        // B. Neighbor Perimeter Springs
+        for (const nb of [prev, next]) {
+          const dx = nb.x - node.x;
+          const dy = nb.y - node.y;
+          const d = Math.hypot(dx, dy) || 1;
+          const force = (d - restSegment) * (stiffness * 1.65);
+          node.vx += (dx / d) * force;
+          node.vy += (dy / d) * force;
+        }
+
+        // C. Cross-diameter stabilization spring (soft resistance to extreme collapse)
+        const odx = opposite.x - node.x;
+        const ody = opposite.y - node.y;
+        const od = Math.hypot(odx, ody) || 1;
+        const oForce = (od - BASE_RADIUS * 2 * Math.sqrt(pressureFactor)) * (stiffness * 0.25);
+        node.vx += (odx / od) * oForce;
+        node.vy += (ody / od) * oForce;
+
+        // D. Internal Jelly Pressure outward normal force
+        const tx = next.x - prev.x;
+        const ty = next.y - prev.y;
+        const tLen = Math.hypot(tx, ty) || 1;
+        const nx = ty / tLen;
+        const ny = -tx / tLen;
+        node.vx += nx * areaDiff;
+        node.vy += ny * areaDiff;
+      }
+
+      // Mouse Grab & Slingshot Force on specific node
+      if (pointer.down && pointer.grabbedNodeIdx !== -1) {
+        const gNode = robot.nodes[pointer.grabbedNodeIdx];
+        gNode.vx += (pointer.x - gNode.x) * 0.36;
+        gNode.vy += (pointer.y - gNode.y) * 0.36;
+        // Also pull adjacent nodes slightly for smooth jelly stretch
+        const leftN = robot.nodes[(pointer.grabbedNodeIdx - 1 + NUM_NODES) % NUM_NODES];
+        const rightN = robot.nodes[(pointer.grabbedNodeIdx + 1) % NUM_NODES];
+        leftN.vx += (pointer.x - leftN.x) * 0.14;
+        leftN.vy += (pointer.y - leftN.y) * 0.14;
+        rightN.vx += (pointer.x - rightN.x) * 0.14;
+        rightN.vy += (pointer.y - rightN.y) * 0.14;
+      }
+
+      // 4. Integrate Node Positions & Handle Wall / Obstacle Soft-Body Collisions
+      let sumX = 0;
+      let sumY = 0;
+      let hitObstacleThisFrame = false;
+
+      for (let i = 0; i < NUM_NODES; i++) {
+        const node = robot.nodes[i];
+        node.vx *= damping;
+        node.vy *= damping;
+        node.x += node.vx;
+        node.y += node.vy;
+
+        // Arena Wall Bounce (Soft squish against walls)
+        const pad = 10;
+        if (node.x < pad) {
+          node.x = pad;
+          node.vx *= -0.65;
+          hitObstacleThisFrame = true;
+        } else if (node.x > W - pad) {
+          node.x = W - pad;
+          node.vx *= -0.65;
+          hitObstacleThisFrame = true;
+        }
+        if (node.y < pad) {
+          node.y = pad;
+          node.vy *= -0.65;
+          hitObstacleThisFrame = true;
+        } else if (node.y > H - pad) {
+          node.y = H - pad;
+          node.vy *= -0.65;
+          hitObstacleThisFrame = true;
+        }
+
+        // Circular Furniture Obstacle Collision (Nodes deform around obstacle!)
+        for (const ob of obstacles) {
+          const dx = node.x - ob.x;
+          const dy = node.y - ob.y;
+          const dist = Math.hypot(dx, dy) || 1;
+          const minR = ob.r + 4;
+          if (dist < minR) {
+            const overlap = minR - dist;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            node.x += nx * overlap;
+            node.y += ny * overlap;
+            // Elastic bounce + tangential slide
+            const vn = node.vx * nx + node.vy * ny;
+            if (vn < 0) {
+              node.vx -= (1.45) * vn * nx;
+              node.vy -= (1.45) * vn * ny;
+            }
+            hitObstacleThisFrame = true;
+          }
+        }
+
+        sumX += node.x;
+        sumY += node.y;
+      }
+
+      // Recompute true center of mass from deformed jelly perimeter
+      robot.cx = sumX / NUM_NODES;
+      robot.cy = sumY / NUM_NODES;
+      robot.strain = totalDeformation / NUM_NODES;
+
+      if (hitObstacleThisFrame && robot.strain > 0.08 && Math.random() < 0.12) {
+        collisionCount++;
+        currentExpression = 'squish';
+        expressionTimer = 35;
+      }
+
+      // 5. Vacuum Vortex Dust Suction Physics
+      const suctionRadius = mode === 'turbo' ? BASE_RADIUS * 2.45 : BASE_RADIUS * 1.75;
+      for (let i = dusts.length - 1; i >= 0; i--) {
+        const d = dusts[i];
+        const dx = robot.cx - d.x;
+        const dy = robot.cy - d.y;
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < BASE_RADIUS * 0.78) {
+          // Sucked into the LG Roboking dustbin!
+          dusts.splice(i, 1);
+          totalCleanedDust++;
+          ripples.push({ x: d.x, y: d.y, r: 3, maxR: 22, alpha: 0.65 });
+          updateTelemetryUI();
+        } else if (dist < suctionRadius) {
+          // Swirl vortex into the vacuum center
+          const pull = ((suctionRadius - dist) / suctionRadius) * (mode === 'turbo' ? 1.45 : 0.85);
+          const nx = dx / dist;
+          const ny = dy / dist;
+          // Add slight swirl tangential component
+          d.vx = (d.vx + nx * pull - ny * pull * 0.35) * 0.86;
+          d.vy = (d.vy + ny * pull + nx * pull * 0.35) * 0.86;
+          d.x += d.vx;
+          d.y += d.vy;
+        }
+      }
+
+      // Auto-respawn dust if floor becomes completely spotless in Auto/Turbo/Jelly mode
+      if (dusts.length === 0 && mode !== 'dock') {
+        spawnDustBurst(30);
+      }
+
+      // Update animations
+      brushAngle += (mode === 'turbo' ? 0.24 : 0.13) * speedMultiplier;
+      lidarAngle += 0.08;
+      if (expressionTimer > 0) {
+        expressionTimer--;
+        if (expressionTimer === 0) {
+          currentExpression = mode === 'turbo' ? 'turbo' : 'normal';
+        }
+      }
+    }
+
+    // Smooth Closed Catmull-Rom / Quadratic Midpoint Spline Renderer for the Jelly Body
+    function traceJellyPath(context, nodes, scaleOffset = 1.0) {
+      context.beginPath();
+      const len = nodes.length;
+      const pts = nodes.map((n) => ({
+        x: robot.cx + (n.x - robot.cx) * scaleOffset,
+        y: robot.cy + (n.y - robot.cy) * scaleOffset
+      }));
+
+      const firstMidX = (pts[len - 1].x + pts[0].x) * 0.5;
+      const firstMidY = (pts[len - 1].y + pts[0].y) * 0.5;
+      context.moveTo(firstMidX, firstMidY);
+
+      for (let i = 0; i < len; i++) {
+        const curr = pts[i];
+        const next = pts[(i + 1) % len];
+        const midX = (curr.x + next.x) * 0.5;
+        const midY = (curr.y + next.y) * 0.5;
+        context.quadraticCurveTo(curr.x, curr.y, midX, midY);
+      }
+      context.closePath();
+    }
+
+    function drawScene() {
+      ctx.clearRect(0, 0, W, H);
+
+      // 1. Subtle Smart Home Floor Tile Grid
+      ctx.strokeStyle = COL_BORDER;
+      ctx.lineWidth = 1;
+      const gridSize = 48;
+      ctx.beginPath();
+      for (let x = gridSize; x < W; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+      }
+      for (let y = gridSize; y < H; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+      }
+      ctx.stroke();
+
+      // Narrow Squeeze Zone Indicator between Obstacle 0 and Obstacle 1
+      if (obstacles.length >= 2) {
+        const ob0 = obstacles[0];
+        const ob1 = obstacles[1];
+        const midY = (ob0.y + ob1.y) * 0.5;
+        ctx.save();
+        ctx.strokeStyle = COL_RED;
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1.3;
+        ctx.strokeRect(ob0.x - 42, ob0.y + ob0.r + 2, 84, (ob1.y - ob1.r) - (ob0.y + ob0.r) - 4);
+        ctx.setLineDash([]);
+        ctx.fillStyle = COL_RED;
+        ctx.font = '700 10px Pretendard, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('젤리 스퀴즈 통과 구간', ob0.x, midY + 3);
+        ctx.restore();
+      }
+
+      // 2. Draw LG All-in-One Tower Station (Top-Left)
+      ctx.save();
+      ctx.fillStyle = COL_SURFACE;
+      ctx.strokeStyle = COL_TITLE;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(station.x - station.w * 0.5, station.y - station.h * 0.5, station.w, station.h, 8);
+      ctx.fill();
+      ctx.stroke();
+
+      // Red top bar on station
+      ctx.fillStyle = COL_RED;
+      ctx.fillRect(station.x - station.w * 0.5, station.y - station.h * 0.5, station.w, 8);
+
+      ctx.fillStyle = COL_TITLE;
+      ctx.font = '800 10.5px Pretendard, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('LG 올인원 타워', station.x, station.y + 1);
+      ctx.fillStyle = COL_CAPTION;
+      ctx.font = '600 9px Pretendard, sans-serif';
+      ctx.fillText('AUTO EMPTY DOCK', station.x, station.y + 16);
+      ctx.restore();
+
+      // 3. Draw Furniture Obstacles
+      for (const ob of obstacles) {
+        ctx.save();
+        ctx.fillStyle = COL_SURFACE;
+        ctx.strokeStyle = COL_BODY;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(ob.x, ob.y, ob.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Inner ring
+        ctx.strokeStyle = COL_BORDER;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(ob.x, ob.y, ob.r - 7, 0, Math.PI * 2);
+        ctx.stroke();
+
+        ctx.fillStyle = COL_TITLE;
+        ctx.font = '700 11px Pretendard, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(ob.label, ob.x, ob.y + 4);
+        ctx.restore();
+      }
+
+      // 4. Draw Dust Particles
+      for (const d of dusts) {
+        ctx.beginPath();
+        ctx.fillStyle = d.isAccent ? COL_RED : COL_BODY;
+        ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 5. Draw Suction / Bounce Ripples
+      for (let i = ripples.length - 1; i >= 0; i--) {
+        const rp = ripples[i];
+        rp.r += 2.2;
+        rp.alpha -= 0.035;
+        if (rp.alpha <= 0 || rp.r >= rp.maxR) {
+          ripples.splice(i, 1);
+          continue;
+        }
+        ctx.save();
+        ctx.strokeStyle = COL_RED;
+        ctx.globalAlpha = rp.alpha;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        ctx.arc(rp.x, rp.y, rp.r, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // 6. Draw Spinning Dual Side-Brushes (attached to front-left and front-right jelly nodes)
+      const headingIdx = Math.round(((robot.heading + Math.PI * 2) % (Math.PI * 2)) / (Math.PI * 2) * NUM_NODES) % NUM_NODES;
+      const leftBrushNode = robot.nodes[(headingIdx + 3) % NUM_NODES];
+      const rightBrushNode = robot.nodes[(headingIdx - 3 + NUM_NODES) % NUM_NODES];
+
+      for (const bNode of [leftBrushNode, rightBrushNode]) {
+        ctx.save();
+        ctx.translate(bNode.x, bNode.y);
+        ctx.rotate(brushAngle);
+        ctx.strokeStyle = COL_BODY;
+        ctx.lineWidth = 2;
+        for (let k = 0; k < 3; k++) {
+          const a = (k / 3) * Math.PI * 2;
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(Math.cos(a) * 18, Math.sin(a) * 18);
+          ctx.stroke();
+          ctx.fillStyle = COL_RED;
+          ctx.beginPath();
+          ctx.arc(Math.cos(a) * 18, Math.sin(a) * 18, 2.3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      }
+
+      // 7. Draw Soft-Body Jelly Robot Vacuum!
+      // 7A. Soft Ground Drop Shadow
+      ctx.save();
+      ctx.translate(0, 5);
+      traceJellyPath(ctx, robot.nodes, 1.02);
+      ctx.fillStyle = COL_BORDER;
+      ctx.fill();
+      ctx.restore();
+
+      // 7B. Outer Translucent Jelly Cushion Rim (LG Heritage Red #A50034)
+      ctx.save();
+      traceJellyPath(ctx, robot.nodes, 1.0);
+      ctx.fillStyle = COL_RED;
+      ctx.globalAlpha = 0.16;
+      ctx.fill();
+      ctx.globalAlpha = 1.0;
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = COL_RED;
+      ctx.stroke();
+      ctx.restore();
+
+      // 7C. Inner Main White Jelly Body (Deforms in sync with perimeter!)
+      ctx.save();
+      traceJellyPath(ctx, robot.nodes, 0.84);
+      ctx.fillStyle = COL_WHITE;
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = COL_TITLE;
+      ctx.stroke();
+      ctx.restore();
+
+      // 7D. Glossy Jelly Highlight Ring (gives 3D squishy jelly feel)
+      ctx.save();
+      traceJellyPath(ctx, robot.nodes, 0.66);
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = COL_BORDER;
+      ctx.stroke();
+      ctx.restore();
+
+      // 7E. Front Bumper Arc & Affectionate Intelligence LED Face Panel
+      const frontX = robot.cx + Math.cos(robot.heading) * (BASE_RADIUS * 0.46);
+      const frontY = robot.cy + Math.sin(robot.heading) * (BASE_RADIUS * 0.46);
+
+      ctx.save();
+      ctx.translate(frontX, frontY);
+      ctx.rotate(robot.heading + Math.PI * 0.5);
+
+      // LED Visor Pill
+      ctx.fillStyle = COL_TITLE;
+      ctx.beginPath();
+      ctx.roundRect(-18, -9, 36, 16, 8);
+      ctx.fill();
+
+      // Expressive AI Eyes inside the visor
+      ctx.strokeStyle = COL_WHITE;
+      ctx.fillStyle = COL_WHITE;
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+
+      if (currentExpression === 'happy') {
+        // Happy ^ ^ eyes
+        ctx.beginPath();
+        ctx.moveTo(-11, 1); ctx.lineTo(-7, -3); ctx.lineTo(-3, 1);
+        ctx.moveTo(3, 1);   ctx.lineTo(7, -3);  ctx.lineTo(11, 1);
+        ctx.stroke();
+      } else if (currentExpression === 'squish') {
+        // Squished > < eyes
+        ctx.beginPath();
+        ctx.moveTo(-11, -3); ctx.lineTo(-5, -0.5); ctx.lineTo(-11, 2);
+        ctx.moveTo(11, -3);  ctx.lineTo(5, -0.5);  ctx.lineTo(11, 2);
+        ctx.stroke();
+      } else if (currentExpression === 'turbo') {
+        // Determined Red/White glowing eyes
+        ctx.fillStyle = COL_RED;
+        ctx.beginPath();
+        ctx.arc(-7, -1, 3.2, 0, Math.PI * 2);
+        ctx.arc(7, -1, 3.2, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        // Normal cute blinking eyes
+        ctx.beginPath();
+        ctx.arc(-7, -1, 2.5, 0, Math.PI * 2);
+        ctx.arc(7, -1, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+
+      // 7F. Center LG AI LiDAR Turret (wobbles slightly with jelly inertia)
+      const turretX = robot.cx - robot.vx * 1.1;
+      const turretY = robot.cy - robot.vy * 1.1;
+
+      ctx.save();
+      ctx.fillStyle = COL_SURFACE;
+      ctx.strokeStyle = COL_RED;
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      ctx.arc(turretX, turretY, 15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      // Rotating LiDAR laser scan beam
+      ctx.strokeStyle = COL_RED;
+      ctx.globalAlpha = 0.35;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(turretX, turretY);
+      ctx.lineTo(turretX + Math.cos(lidarAngle) * 32, turretY + Math.sin(lidarAngle) * 32);
+      ctx.stroke();
+      ctx.globalAlpha = 1.0;
+
+      // LG Center Typography
+      ctx.fillStyle = COL_RED;
+      ctx.font = '800 9.5px Pretendard, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('LG AI', turretX, turretY + 0.5);
+      ctx.restore();
+
+      // 8. Draw Mouse Grab Elastic Line when user is stretching the jelly robot
+      if (pointer.down && (pointer.grabbedNodeIdx !== -1 || pointer.grabCenter)) {
+        const anchorX = pointer.grabCenter ? robot.cx : robot.nodes[pointer.grabbedNodeIdx].x;
+        const anchorY = pointer.grabCenter ? robot.cy : robot.nodes[pointer.grabbedNodeIdx].y;
+        ctx.save();
+        ctx.strokeStyle = COL_RED;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.moveTo(anchorX, anchorY);
+        ctx.lineTo(pointer.x, pointer.y);
+        ctx.stroke();
+        ctx.fillStyle = COL_RED;
+        ctx.beginPath();
+        ctx.arc(pointer.x, pointer.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    function resizeCanvas() {
+      const rect = container.getBoundingClientRect();
+      W = Math.max(600, Math.floor(rect.width));
+      H = Math.max(340, Math.floor(rect.height));
+      canvas.width = W;
+      canvas.height = H;
+      setupObstacles();
+    }
+
+    let frameCounter = 0;
+    function loop() {
+      stepPhysics();
+      drawScene();
+      frameCounter++;
+      if (frameCounter % 10 === 0) {
+        updateTelemetryUI();
+      }
+      requestAnimationFrame(loop);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    initRobot(210, 260);
+    spawnDustBurst(45);
+    loop();
+  </script>
+</body>
+</html>
