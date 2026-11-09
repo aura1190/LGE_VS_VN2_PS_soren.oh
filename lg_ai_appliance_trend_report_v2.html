@@ -1,0 +1,3948 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LG AI 가전 트렌드 보고서 v2 | 전략 업무 포탈</title>
+  <style>
+    /* ==========================================================================
+       lg-brand-slide Skill: Strict Hex Code Palette Enforcement
+       - Primary Brand Accent : #A50034 (LG Heritage Red)
+       - Main Background      : #FFFFFF (Pure White)
+       - Card / Surface       : #F8F9FA (Soft Gray)
+       - Border / Divider     : #E5E7EB (1px Solid Divider)
+       - Typography Title     : #111827 (Charcoal Black)
+       - Typography Body      : #374151 (Slate Gray)
+       - Typography Caption   : #6B7280 (Muted Gray)
+       ========================================================================== */
+    :root {
+      --lg-red: #A50034;
+      --bg-main: #FFFFFF;
+      --bg-surface: #F8F9FA;
+      --border-line: #E5E7EB;
+      --text-title: #111827;
+      --text-body: #374151;
+      --text-caption: #6B7280;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif;
+      background-color: var(--bg-surface);
+      color: var(--text-body);
+      height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==========================================================================
+       Work Portal Layout: Left Sidebar + Right Main Workspace
+       ========================================================================== */
+    .portal-layout {
+      display: flex;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left Sidebar */
+    .portal-sidebar {
+      width: 290px;
+      flex-shrink: 0;
+      background-color: var(--bg-main);
+      border-right: 1px solid var(--border-line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .sidebar-top {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Portal Brand Header */
+    .portal-brand {
+      padding: 20px 20px 18px;
+      border-bottom: 1px solid var(--border-line);
+      border-top: 4px solid var(--lg-red);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .brand-info h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-title);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-info p {
+      font-size: 11.5px;
+      color: var(--text-caption);
+      margin-top: 2px;
+    }
+
+    /* Sidebar Section Label */
+    .sidebar-section-label {
+      padding: 16px 20px 8px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-caption);
+    }
+
+    /* Sidebar Navigation Menu */
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 0 12px;
+    }
+
+    .nav-item {
+      width: 100%;
+      text-align: left;
+      background-color: var(--bg-main);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 7px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-family: inherit;
+      transition: background-color 0.15s ease;
+    }
+
+    .nav-item:hover {
+      background-color: var(--bg-surface);
+      border-color: var(--border-line);
+    }
+
+    .nav-item.active {
+      background-color: var(--bg-surface);
+      border-color: var(--border-line);
+      border-left: 4px solid var(--lg-red);
+    }
+
+    .nav-num {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background-color: var(--bg-surface);
+      color: var(--text-caption);
+      border: 1px solid var(--border-line);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .nav-item.active .nav-num {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      border-color: var(--lg-red);
+    }
+
+    .nav-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .nav-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-title);
+      line-height: 1.3;
+    }
+
+    .nav-item.active .nav-title {
+      color: var(--lg-red);
+    }
+
+    .nav-desc {
+      font-size: 11px;
+      color: var(--text-caption);
+      line-height: 1.3;
+    }
+
+    /* Sidebar Live Market Widget (python-api-lge-trend) */
+    .market-widget {
+      margin: 12px 14px 0;
+      padding: 12px 14px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-top: 3px solid var(--lg-red);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .widget-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .widget-badge {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--lg-red);
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .market-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .market-cell {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 4px;
+      padding: 6px 8px;
+    }
+
+    .market-cell-label {
+      font-size: 10px;
+      color: var(--text-caption);
+      font-weight: 600;
+    }
+
+    .market-cell-val {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-top: 2px;
+    }
+
+    .market-cell-val span.up {
+      color: var(--lg-red);
+      font-size: 11px;
+      margin-left: 3px;
+    }
+
+    .news-mini-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-top: 1px solid var(--border-line);
+      padding-top: 6px;
+    }
+
+    .news-mini-list li {
+      font-size: 11px;
+      color: var(--text-body);
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .news-mini-list li::before {
+      content: "• ";
+      color: var(--lg-red);
+      font-weight: 700;
+    }
+
+    /* Sidebar Footer */
+    .sidebar-footer {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border-line);
+      background-color: var(--bg-surface);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .shortcut-hint {
+      font-size: 11px;
+      color: var(--text-caption);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .kbd {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .portal-print-btn {
+      width: 100%;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      color: var(--text-title);
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .portal-print-btn:hover {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      border-color: var(--lg-red);
+    }
+
+    /* ==========================================================================
+       Right Main Workspace Area
+       ========================================================================== */
+    .portal-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      background-color: var(--bg-surface);
+    }
+
+    /* Top Portal Header Bar */
+    .portal-topbar {
+      height: 54px;
+      flex-shrink: 0;
+      background-color: var(--bg-main);
+      border-bottom: 1px solid var(--border-line);
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-caption);
+    }
+
+    .breadcrumb strong {
+      color: var(--text-title);
+      font-weight: 700;
+    }
+
+    .breadcrumb .sep {
+      color: var(--border-line);
+    }
+
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .doc-status {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-body);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    .nav-btn {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      color: var(--text-title);
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      border-color: var(--lg-red);
+    }
+
+    .nav-btn:disabled {
+      color: var(--text-caption);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .page-counter {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--text-title);
+      min-width: 52px;
+      text-align: center;
+    }
+
+    .page-counter span {
+      color: var(--lg-red);
+    }
+
+    /* Slide Stage Container inside Portal */
+    .portal-stage {
+      flex: 1;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .deck-wrapper {
+      width: 100%;
+      height: 100%;
+      max-width: 1320px;
+      position: relative;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 32px 44px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: var(--bg-main);
+      border-top: 4px solid var(--lg-red);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Slide Header */
+    .slide-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--lg-red);
+    }
+
+    .eyebrow .badge {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 10.5px;
+    }
+
+    .slide-title {
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      color: var(--text-title);
+      line-height: 1.25;
+    }
+
+    .slide-title span.accent {
+      color: var(--lg-red);
+    }
+
+    .slide-subtitle {
+      font-size: 13.5px;
+      color: var(--text-body);
+      font-weight: 400;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--bg-surface);
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border-line);
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-title);
+      white-space: nowrap;
+    }
+
+    .brand-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9.5px;
+      font-weight: 800;
+    }
+
+    /* Slide Body */
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 0;
+    }
+
+    /* Takeaway Banner */
+    .takeaway-banner {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-left: 4px solid var(--lg-red);
+      padding: 10px 16px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .takeaway-banner p {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-body);
+      line-height: 1.45;
+    }
+
+    .takeaway-banner p strong {
+      color: var(--text-title);
+      font-weight: 700;
+    }
+
+    .takeaway-banner p strong.red {
+      color: var(--lg-red);
+    }
+
+    .takeaway-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--lg-red);
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      padding: 4px 10px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* 2-Column Minimal Layout */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 18px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Cards */
+    .card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-radius: 8px;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 0;
+    }
+
+    .card.accent-top {
+      border-top: 3px solid var(--lg-red);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--text-title);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      font-size: 11.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-desc {
+      font-size: 12.5px;
+      color: var(--text-body);
+      line-height: 1.45;
+    }
+
+    /* Slide 1: Paradigm Comparison Table & Pillars */
+    .vs-table {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+    }
+
+    .vs-row {
+      display: grid;
+      grid-template-columns: 88px 1fr 22px 1.15fr;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--bg-main);
+      padding: 9px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border-line);
+      font-size: 12px;
+    }
+
+    .vs-label {
+      font-weight: 700;
+      color: var(--text-title);
+      font-size: 11.5px;
+    }
+
+    .vs-old {
+      color: var(--text-caption);
+      background-color: var(--bg-surface);
+      padding: 5px 8px;
+      border-radius: 4px;
+      text-align: center;
+      border: 1px solid var(--border-line);
+    }
+
+    .vs-arrow {
+      text-align: center;
+      color: var(--lg-red);
+      font-weight: 800;
+    }
+
+    .vs-new {
+      color: var(--lg-red);
+      background-color: var(--bg-main);
+      font-weight: 700;
+      padding: 5px 8px;
+      border-radius: 4px;
+      text-align: center;
+      border: 1px solid var(--lg-red);
+    }
+
+    .pillar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .pillar-item {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .pillar-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 6px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      color: var(--lg-red);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .pillar-content h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 2px;
+      color: var(--text-title);
+    }
+
+    .pillar-content p {
+      font-size: 11.5px;
+      color: var(--text-body);
+      line-height: 1.4;
+    }
+
+    /* Slide 2: Architecture Layers & Product Cards */
+    .arch-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    .arch-layer {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 9px 12px;
+    }
+
+    .arch-layer.hub-layer {
+      border-top: 3px solid var(--lg-red);
+    }
+
+    .arch-layer-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--lg-red);
+      margin-bottom: 3px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .arch-layer-main {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--text-title);
+      margin-bottom: 5px;
+    }
+
+    .arch-chips {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background-color: var(--bg-surface);
+      color: var(--text-body);
+      font-weight: 600;
+      border: 1px solid var(--border-line);
+    }
+
+    .connector-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-caption);
+      margin: -2px 0;
+    }
+
+    .product-card {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 9px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .product-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .product-cat {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .product-tag {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--lg-red);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .product-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .product-bullets li {
+      font-size: 11.5px;
+      color: var(--text-body);
+      padding-left: 11px;
+      position: relative;
+      line-height: 1.38;
+    }
+
+    .product-bullets li strong {
+      color: var(--text-title);
+    }
+
+    .product-bullets li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--lg-red);
+      font-weight: 700;
+    }
+
+    /* Slide 3 & 4: KPIs & Bar Charts */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .kpi-box {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    .kpi-box.primary {
+      border-top: 3px solid var(--lg-red);
+    }
+
+    .kpi-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--text-caption);
+      margin-bottom: 3px;
+    }
+
+    .kpi-val {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-title);
+    }
+
+    .kpi-box.primary .kpi-val {
+      color: var(--lg-red);
+    }
+
+    .kpi-sub {
+      font-size: 10.5px;
+      color: var(--text-caption);
+      margin-top: 2px;
+    }
+
+    .chart-box {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 10px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .chart-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-title);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .chart-title span {
+      font-size: 10.5px;
+      color: var(--text-caption);
+      font-weight: 500;
+    }
+
+    .bar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .bar-item {
+      display: grid;
+      grid-template-columns: 92px 1fr 76px;
+      align-items: center;
+      gap: 8px;
+      font-size: 11.5px;
+    }
+
+    .bar-year {
+      font-weight: 700;
+      color: var(--text-body);
+    }
+
+    .bar-year.accent {
+      color: var(--lg-red);
+      font-weight: 800;
+    }
+
+    .bar-track {
+      height: 11px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background-color: var(--text-caption);
+      border-radius: 999px;
+    }
+
+    .bar-fill.dark {
+      background-color: var(--text-title);
+    }
+
+    .bar-fill.accent {
+      background-color: var(--lg-red);
+    }
+
+    .bar-num {
+      text-align: right;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .bar-num.accent {
+      color: var(--lg-red);
+      font-weight: 800;
+    }
+
+    /* Slide 5: Live News Feed & Market Sync Styles */
+    .news-feed-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      flex: 1;
+      justify-content: space-between;
+    }
+
+    .news-card-item {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .news-card-item:hover {
+      border-color: var(--lg-red);
+    }
+
+    .news-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .news-rank {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--lg-red);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .news-date {
+      font-size: 10.5px;
+      color: var(--text-caption);
+      font-weight: 500;
+    }
+
+    .news-headline {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-title);
+      line-height: 1.35;
+    }
+
+    .sync-btn {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      color: var(--text-title);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .sync-btn:hover {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      border-color: var(--lg-red);
+    }
+
+    /* Slide 7: AI Deep Regression Imputation Table & Dual Bar Chart */
+    .imputation-table-wrap {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+    }
+
+    .imputation-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      text-align: left;
+    }
+
+    .imputation-table thead th {
+      position: sticky;
+      top: 0;
+      background-color: var(--bg-surface);
+      color: var(--text-title);
+      font-weight: 700;
+      padding: 6px 8px;
+      border-bottom: 1px solid var(--border-line);
+      font-size: 10.5px;
+      z-index: 1;
+    }
+
+    .imputation-table tbody td {
+      padding: 5px 8px;
+      border-bottom: 1px solid var(--border-line);
+      color: var(--text-body);
+    }
+
+    .imputation-table tbody tr:hover {
+      background-color: var(--bg-surface);
+    }
+
+    .null-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      color: var(--text-caption);
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .pred-badge {
+      display: inline-block;
+      padding: 1px 7px;
+      border-radius: 4px;
+      background-color: var(--bg-main);
+      border: 1px solid var(--lg-red);
+      color: var(--lg-red);
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .dual-bar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .dual-bar-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 122px;
+      align-items: center;
+      gap: 10px;
+      font-size: 11.5px;
+    }
+
+    .dual-tracks {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dual-track-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dual-track-tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      width: 34px;
+      color: var(--text-caption);
+      flex-shrink: 0;
+    }
+
+    .dual-track-tag.after {
+      color: var(--lg-red);
+    }
+
+    .formula-box {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-left: 3px solid var(--lg-red);
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-size: 11.5px;
+      color: var(--text-body);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .formula-box strong {
+      color: var(--text-title);
+    }
+
+    .formula-box span.r2 {
+      color: var(--lg-red);
+      font-weight: 800;
+    }
+
+    /* Slide 8: K-Means Scatter Plot & Sales Strategy Matrix */
+    .scatter-container {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+
+    .scatter-legend-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .scatter-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-title);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-radius: 4px;
+      padding: 4px 7px;
+    }
+
+    .legend-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .strategy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .strategy-card {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .strategy-card.primary {
+      border: 1.5px solid var(--lg-red);
+    }
+
+    .strategy-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 5px;
+    }
+
+    .strategy-cluster-tag {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background-color: var(--bg-surface);
+      color: var(--text-title);
+      border: 1px solid var(--border-line);
+    }
+
+    .strategy-cluster-tag.red {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+      border-color: var(--lg-red);
+    }
+
+    .strategy-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-title);
+      margin-top: 2px;
+    }
+
+    .strategy-metrics {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .strategy-metric-pill {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-body);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    .strategy-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+      color: var(--text-body);
+      line-height: 1.38;
+    }
+
+    .strategy-list li {
+      position: relative;
+      padding-left: 10px;
+    }
+
+    .strategy-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--lg-red);
+      font-weight: 800;
+    }
+
+    /* Slide 9: Decision Tree Branching Diagram & Grade Cards */
+    .dtree-canvas {
+      flex: 1;
+      min-height: 0;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .grade-card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      flex: 1;
+      min-height: 0;
+    }
+
+    .grade-card {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .grade-card.tier-s {
+      border: 2px solid var(--lg-red);
+    }
+
+    .grade-card.tier-a {
+      border: 1.5px solid var(--text-title);
+    }
+
+    .grade-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-line);
+      padding-bottom: 6px;
+    }
+
+    .grade-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .grade-medal {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+
+    .grade-medal.s {
+      background-color: var(--lg-red);
+      color: var(--bg-main);
+    }
+
+    .grade-medal.a {
+      background-color: var(--text-title);
+      color: var(--bg-main);
+    }
+
+    .grade-medal.b {
+      background-color: var(--bg-surface);
+      color: var(--text-title);
+      border: 1.5px solid var(--text-body);
+    }
+
+    .grade-medal.c {
+      background-color: var(--bg-surface);
+      color: var(--text-caption);
+      border: 1px solid var(--border-line);
+    }
+
+    .grade-name-group h3 {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: var(--text-title);
+      line-height: 1.2;
+    }
+
+    .grade-name-group span {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-caption);
+    }
+
+    .grade-prob-pill {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      color: var(--text-title);
+    }
+
+    .grade-prob-pill.high {
+      background-color: var(--bg-main);
+      border-color: var(--lg-red);
+      color: var(--lg-red);
+    }
+
+    .grade-rule-box {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .grade-kpi-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .grade-kpi-cell {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      border-radius: 4px;
+      padding: 4px 6px;
+      text-align: center;
+    }
+
+    .grade-kpi-cell .lbl {
+      font-size: 9.5px;
+      color: var(--text-caption);
+      display: block;
+    }
+
+    .grade-kpi-cell .val {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--text-title);
+    }
+
+    .grade-kpi-cell .val.red {
+      color: var(--lg-red);
+    }
+
+    .grade-desc {
+      font-size: 10.5px;
+      color: var(--text-body);
+      line-height: 1.35;
+    }
+
+    /* Slide 10: Time-Series Regression Forecast & Feature Importance Bar Chart */
+    .ts-chart-box {
+      flex: 1;
+      min-height: 0;
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .impact-rank-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .impact-rank-item {
+      background-color: var(--bg-main);
+      border: 1px solid var(--border-line);
+      border-radius: 6px;
+      padding: 8px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .impact-rank-item.top-rank {
+      border-left: 3.5px solid var(--lg-red);
+    }
+
+    .impact-rank-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+    }
+
+    .impact-rank-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 800;
+      color: var(--text-title);
+    }
+
+    .rank-num-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-line);
+      color: var(--text-title);
+    }
+
+    .rank-num-badge.red {
+      background-color: var(--lg-red);
+      border-color: var(--lg-red);
+      color: var(--bg-main);
+    }
+
+    .impact-rank-meta {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-body);
+    }
+
+    .impact-rank-meta strong {
+      color: var(--lg-red);
+      font-weight: 800;
+    }
+
+    /* Slide Footer (Rule: Always display current / total page number) */
+    .slide-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--border-line);
+      padding-top: 10px;
+      margin-top: 10px;
+      font-size: 11px;
+      color: var(--text-caption);
+    }
+
+    .slide-page-indicator {
+      font-weight: 700;
+      color: var(--text-title);
+    }
+
+    .slide-page-indicator span {
+      color: var(--lg-red);
+    }
+
+    /* Print / PDF Support (4 pages 16:9) */
+    @media print {
+      @page {
+        size: 16in 9in;
+        margin: 0;
+      }
+      body {
+        background-color: var(--bg-main);
+        height: auto;
+        overflow: visible;
+        display: block;
+      }
+      .portal-sidebar,
+      .portal-topbar {
+        display: none !important;
+      }
+      .portal-layout,
+      .portal-main,
+      .portal-stage {
+        display: block;
+        padding: 0;
+        height: auto;
+        overflow: visible;
+      }
+      .deck-wrapper {
+        max-width: none;
+        width: 100%;
+        height: auto;
+        border: none;
+        border-radius: 0;
+      }
+      .slide {
+        position: relative;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 100vw;
+        height: 100vh;
+        page-break-after: always;
+        break-after: page;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="portal-layout">
+
+    <!-- ==================== LEFT SIDEBAR (WORK PORTAL NAVIGATION) ==================== -->
+    <aside class="portal-sidebar" aria-label="업무 포탈 사이드바">
+      <div class="sidebar-top">
+        <div class="portal-brand">
+          <div class="brand-logo">LG</div>
+          <div class="brand-info">
+            <h2>LG AI 전략 업무 포탈</h2>
+            <p>H&amp;A 경영전략 · 트렌드 리포트 v2</p>
+          </div>
+        </div>
+
+        <div class="sidebar-section-label">REPORT SLIDES (10)</div>
+        <nav class="sidebar-nav" id="sidebarNav">
+          <button class="nav-item active" onclick="goToSlide(0)">
+            <span class="nav-num">01</span>
+            <div class="nav-text">
+              <span class="nav-title">공감지능 비전 &amp; 패러다임</span>
+              <span class="nav-desc">Zero Labor Home · 3대 차별점</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(1)">
+            <span class="nav-num">02</span>
+            <div class="nav-text">
+              <span class="nav-title">핵심 AI 기술 &amp; 주력 라인업</span>
+              <span class="nav-desc">ThinQ ON · DQ-C · 3대 가전</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(2)">
+            <span class="nav-num">03</span>
+            <div class="nav-text">
+              <span class="nav-title">시장 전망 및 비즈니스 시사점</span>
+              <span class="nav-desc">가전 구독 2조+ · B2B 공간 확장</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(3)">
+            <span class="nav-num">04</span>
+            <div class="nav-text">
+              <span class="nav-title">세계 주요국 명목 GDP 비교</span>
+              <span class="nav-desc">IMF WEO 순위 · 권역별 공략</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(4)">
+            <span class="nav-num">05</span>
+            <div class="nav-text">
+              <span class="nav-title">실시간 시장·환율 &amp; 뉴스</span>
+              <span class="nav-desc">python-api-lge-trend 연동</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(5)">
+            <span class="nav-num">06</span>
+            <div class="nav-text">
+              <span class="nav-title">가전 실적 구독분석</span>
+              <span class="nav-desc">제품군 마진 · 권역별 구독 전환율</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(6)">
+            <span class="nav-num">07</span>
+            <div class="nav-text">
+              <span class="nav-title">AI 심층 분석 (회귀 복원)</span>
+              <span class="nav-desc">워시타워 결측 23건 추정 · 전후 비교</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(7)">
+            <span class="nav-num">08</span>
+            <div class="nav-text">
+              <span class="nav-title">K-Means 군집 &amp; 영업전략</span>
+              <span class="nav-desc">구독률·이익률 산점도 · 4대 전략</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(8)">
+            <span class="nav-num">09</span>
+            <div class="nav-text">
+              <span class="nav-title">의사결정트리 &amp; 등급카드</span>
+              <span class="nav-desc">고수익 분기 갈림길 · S~C 등급표</span>
+            </div>
+          </button>
+
+          <button class="nav-item" onclick="goToSlide(9)">
+            <span class="nav-num">10</span>
+            <div class="nav-text">
+              <span class="nav-title">4분기 매출예측 &amp; 변수영향도</span>
+              <span class="nav-desc">시계열 회귀 추세선 · 영향도 순위</span>
+            </div>
+          </button>
+        </nav>
+
+        <!-- Live Market & News Widget (python-api-lge-trend 연동) -->
+        <div class="sidebar-section-label">LIVE MARKET BRIEFING</div>
+        <div class="market-widget" onclick="goToSlide(4)" style="cursor: pointer;" title="클릭하여 05. 실시간 시장·환율 & 뉴스 슬라이드로 이동">
+          <div class="widget-header">
+            <span>LG전자 (066570) · 환율</span>
+            <span class="widget-badge" id="sidebarApiStatus">LIVE API</span>
+          </div>
+          <div class="market-grid">
+            <div class="market-cell">
+              <div class="market-cell-label">현재가 (KRX)</div>
+              <div class="market-cell-val" id="sidebarStockPrice">135,900<span class="up">-1.95%</span></div>
+            </div>
+            <div class="market-cell">
+              <div class="market-cell-label">USD / KRW</div>
+              <div class="market-cell-val" id="sidebarUsdKrw">1,358.73</div>
+            </div>
+          </div>
+          <ul class="news-mini-list" title="구글 뉴스 실시간 'LG전자 AI 가전' 헤드라인">
+            <li>[기업家] LG전자, 가전 넘어 AI·전장·로봇으로 미래 성장 가속</li>
+            <li>AI 가전 경쟁 2막… ‘스스로 판단하는 AI’ 승부</li>
+            <li>LG전자, AI 가전·히트펌프·태양광 결합 에너지 자립형 주택</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="shortcut-hint">
+          <span>슬라이드 단축키</span>
+          <span><span class="kbd">←</span> <span class="kbd">→</span> 방향키</span>
+        </div>
+        <button class="portal-print-btn" onclick="window.print()">전체 슬라이드 PDF / 인쇄 (10P)</button>
+      </div>
+    </aside>
+
+    <!-- ==================== RIGHT MAIN WORKSPACE ==================== -->
+    <div class="portal-main">
+
+      <!-- Top Portal Utility Bar -->
+      <header class="portal-topbar">
+        <div class="breadcrumb">
+          <span>전략포탈 홈</span>
+          <span class="sep">/</span>
+          <span>AI 가전 트렌드 보고서 v2</span>
+          <span class="sep">/</span>
+          <strong id="currentSlideBreadcrumb">01. 공감지능 비전 및 패러다임 전환</strong>
+        </div>
+
+        <div class="topbar-controls">
+          <span class="doc-status">임원 보고용 · 16:9 SLIDE DECK</span>
+          <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>← 이전</button>
+          <div class="page-counter" id="pageCounter"><span>01</span> / 10</div>
+          <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">다음 →</button>
+        </div>
+      </header>
+
+      <!-- Main 16:9 Slide Stage -->
+      <div class="portal-stage">
+        <main class="deck-wrapper" id="deck">
+
+          <!-- ==================== SLIDE 1: VISION & PARADIGM ==================== -->
+          <section class="slide active" data-slide="0" data-title="01. 공감지능 비전 및 패러다임 전환">
+            <header class="slide-header">
+              <div class="header-left">
+                <div class="eyebrow">
+                  <span class="badge">SLIDE 01</span>
+                  <span>AI VISION &amp; PARADIGM SHIFT</span>
+                </div>
+                <h1 class="slide-title">공감지능(<span class="accent">Affectionate Intelligence</span>): AI 가전의 패러다임 전환</h1>
+                <p class="slide-subtitle">단순 기능 제어(Smart)를 넘어 사용자를 이해하고 먼저 배려하는 ‘AI 홈(Zero Labor Home)’으로 진화</p>
+              </div>
+              <div class="brand-mark">
+                <span class="brand-circle">LG</span>
+                <span>AI 가전 트렌드 보고서 v2</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="takeaway-banner">
+                <p><strong>Executive Summary:</strong> LG전자는 AI를 ‘인공지능’에서 <strong class="red">‘공감지능(사용자를 더 배려하고 공감하는 지능)’</strong>으로 재정의하며, 가사 해방을 실현하는 <strong>‘제로 레이버 홈(Zero Labor Home)’</strong>을 핵심 지향점으로 설정</p>
+                <span class="takeaway-tag">Vision 2030 핵심축</span>
+              </div>
+
+              <div class="grid-2col">
+                <!-- Left: Paradigm Shift Comparison -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <div class="card-title">
+                        <span class="card-num">1</span>
+                        기존 스마트 가전 vs LG 공감지능(AI) 가전
+                      </div>
+                    </div>
+                    <p class="card-desc">명령 수행형 기기에서 <strong>맥락 이해·자율 케어형 동반자</strong>로의 근본적 전환</p>
+                  </div>
+
+                  <div class="vs-table">
+                    <div class="vs-row">
+                      <span class="vs-label">상호작용 방식</span>
+                      <span class="vs-old">명령어·앱 수동 조작</span>
+                      <span class="vs-arrow">→</span>
+                      <span class="vs-new">일상 대화 및 선제적 제안</span>
+                    </div>
+                    <div class="vs-row">
+                      <span class="vs-label">작동 메커니즘</span>
+                      <span class="vs-old">사전 설정된 규칙(Rule) 기반</span>
+                      <span class="vs-arrow">→</span>
+                      <span class="vs-new">실시간 공간·생체 데이터 추론</span>
+                    </div>
+                    <div class="vs-row">
+                      <span class="vs-label">제품 생명주기</span>
+                      <span class="vs-old">구매 시점 성능 고정</span>
+                      <span class="vs-arrow">→</span>
+                      <span class="vs-new">UP가전 2.0 지속 기능 진화</span>
+                    </div>
+                    <div class="vs-row">
+                      <span class="vs-label">연결 생태계</span>
+                      <span class="vs-old">자사 가전 중심 폐쇄형 연동</span>
+                      <span class="vs-arrow">→</span>
+                      <span class="vs-new">생성형 AI 허브 + 개방형 IoT</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: 3 Differentiators of Affectionate Intelligence -->
+                <div class="card accent-top">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <span class="card-num">2</span>
+                      LG 공감지능의 3대 핵심 차별화 요소
+                    </div>
+                  </div>
+
+                  <div class="pillar-list">
+                    <div class="pillar-item">
+                      <div class="pillar-icon">01</div>
+                      <div class="pillar-content">
+                        <h4>월드와이드 리얼 데이터 (Real-time Life Data)</h4>
+                        <p>글로벌 수억 대의 스마트 제품 접점에서 축적되는 생활 패턴·환경·공간 데이터를 실시간 학습하여 초개인화 경험 제공</p>
+                      </div>
+                    </div>
+
+                    <div class="pillar-item">
+                      <div class="pillar-icon">02</div>
+                      <div class="pillar-content">
+                        <h4>LG AI 브레인 &amp; 오케스트레이션 (Orchestration)</h4>
+                        <p>자체 LLM(EXAONE 기반)과 멀티모달 센싱을 결합해 가정 내 가전·조명·공조 기기를 하나의 유기체처럼 통합 조율</p>
+                      </div>
+                    </div>
+
+                    <div class="pillar-item">
+                      <div class="pillar-icon">03</div>
+                      <div class="pillar-content">
+                        <h4>신뢰·책임 기반 보안 체계 (LG Shield)</h4>
+                        <p>온디바이스 AI 처리와 종단간 암호화 솔루션 ‘LG 쉴드’를 적용해 민감한 홈·생체 데이터의 외부 유출 원천 차단</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: LG전자 글로벌 키노트 (Affectionate Intelligence) 및 스마트홈 전략 종합</span>
+              <span class="slide-page-indicator"><span>01</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- ==================== SLIDE 2: CORE TECH & LINEUP ==================== -->
+          <section class="slide" data-slide="1" data-title="02. 핵심 AI 기술 아키텍처 및 주력 가전 라인업">
+            <header class="slide-header">
+              <div class="header-left">
+                <div class="eyebrow">
+                  <span class="badge">SLIDE 02</span>
+                  <span>CORE AI TECH &amp; PRODUCT LINEUP</span>
+                </div>
+                <h1 class="slide-title">핵심 AI 기술 아키텍처 및 <span class="accent">주력 가전 라인업</span></h1>
+                <p class="slide-subtitle">생성형 AI 홈 허브 ‘ThinQ ON’과 전용 온디바이스 AI 칩(DQ-C)·모터/컴프레서 AI 코어테크의 결합</p>
+              </div>
+              <div class="brand-mark">
+                <span class="brand-circle">LG</span>
+                <span>AI 가전 트렌드 보고서 v2</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="takeaway-banner">
+                <p><strong>Core Architecture:</strong> <strong class="red">[두뇌]</strong> 생성형 AI 허브 <strong>ThinQ ON</strong> + <strong class="red">[신경망]</strong> 가전 전용 온디바이스 AI 칩 <strong>DQ-C</strong> + <strong class="red">[신체]</strong> 인버터 모터·컴프레서 <strong>AI 코어테크</strong>의 3계층 수직 통합</p>
+                <span class="takeaway-tag">On-Device + Cloud 하이브리드</span>
+              </div>
+
+              <div class="grid-2col">
+                <!-- Left: 3-Layer AI Home Architecture Diagram -->
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <span class="card-num">1</span>
+                      LG AI 홈 3-Layer 기술 아키텍처
+                    </div>
+                  </div>
+
+                  <div class="arch-diagram">
+                    <div class="arch-layer hub-layer">
+                      <div class="arch-layer-title">
+                        <span>LAYER 1 · AI HOME BRAIN</span>
+                        <span>생성형 AI 허브</span>
+                      </div>
+                      <div class="arch-layer-main">LG ThinQ ON (씽큐 온) &amp; 이동형 AI 홈 허브 (Q9)</div>
+                      <div class="arch-chips">
+                        <span class="chip">자연어 맥락 대화</span>
+                        <span class="chip">복합 루틴 자동 생성</span>
+                        <span class="chip">Matter / Thread 개방형 연동</span>
+                      </div>
+                    </div>
+
+                    <div class="connector-row">
+                      <span>▲ 실시간 상태/센서 피드백</span>
+                      <span>▼ 자율 제어 명령 &amp; UP가전 기능 배포</span>
+                    </div>
+
+                    <div class="arch-layer">
+                      <div class="arch-layer-title">
+                        <span>LAYER 2 · ON-DEVICE SILICON &amp; OS</span>
+                        <span>가전 전용 반도체</span>
+                      </div>
+                      <div class="arch-layer-main">자체 개발 AI 칩 ‘DQ-C’ &amp; 가전 전용 OS</div>
+                      <div class="arch-chips">
+                        <span class="chip">온디바이스 NPU 추론</span>
+                        <span class="chip">UP가전 2.0 맞춤형 앱 구동</span>
+                        <span class="chip">음성·영상·진동 실시간 분석</span>
+                      </div>
+                    </div>
+
+                    <div class="arch-layer">
+                      <div class="arch-layer-title">
+                        <span>LAYER 3 · AI CORE-TECH</span>
+                        <span>핵심 부품 지능화</span>
+                      </div>
+                      <div class="arch-layer-main">AI DD 모터 &amp; AI 듀얼 인버터 컴프레서</div>
+                      <div class="arch-chips">
+                        <span class="chip">부하·재질 실시간 감지</span>
+                        <span class="chip">소비전력 최대 30%+ 절감</span>
+                        <span class="chip">부품 마모·고장 사전 예측</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Key Product Lineup Cards -->
+                <div class="card accent-top">
+                  <div class="card-header" style="margin-bottom: 4px;">
+                    <div class="card-title">
+                      <span class="card-num">2</span>
+                      공감지능 적용 3대 핵심 가전 라인업
+                    </div>
+                  </div>
+
+                  <div class="product-card">
+                    <div class="product-card-top">
+                      <span class="product-cat">리빙 솔루션 · 세탁건조 &amp; 로봇청소기</span>
+                      <span class="product-tag">워시타워 · 워시콤보 · 코드제로</span>
+                    </div>
+                    <ul class="product-bullets">
+                      <li><strong>AI 옷감/오염도 감지:</strong> 세탁물 무게·재질·오염도를 딥러닝으로 분석해 최적 6모션 세탁 및 건조 시간 자동 제어</li>
+                      <li><strong>AI 자율주행 올인원 로봇청소기:</strong> 전면 카메라·3D 센서로 사물 100여 종 인식 및 카펫·얼룩 맞춤 흡입/물걸레질</li>
+                    </ul>
+                  </div>
+
+                  <div class="product-card">
+                    <div class="product-card-top">
+                      <span class="product-cat">키친 솔루션 · 냉장고 &amp; 조리가전</span>
+                      <span class="product-tag">디아르 · 오브제컬렉션</span>
+                    </div>
+                    <ul class="product-bullets">
+                      <li><strong>AI 정온·절전 케어:</strong> 사용자의 문 개폐 시간대·빈도를 학습해 사용 2시간 전 집중 냉각 및 심야 절전 운전 자동 전환</li>
+                      <li><strong>AI 비전 식재료 관리:</strong> 내부 카메라로 입고 식재료 자동 인식, 소비기한 알림 및 맞춤형 레시피·오븐 조리값 전송</li>
+                    </ul>
+                  </div>
+
+                  <div class="product-card">
+                    <div class="product-card-top">
+                      <span class="product-cat">에어 솔루션 · 에어컨 &amp; 공기질 케어</span>
+                      <span class="product-tag">휘센 타워 · 퓨리케어</span>
+                    </div>
+                    <ul class="product-bullets">
+                      <li><strong>AI 레이더 스마트케어:</strong> mmWave 레이더 센서로 재실자 위치·활동량을 감지해 직접풍/간접풍 전환 및 부재 시 자동 절전</li>
+                      <li><strong>AI 맞춤 공기질 관리:</strong> 오염원(요리 매연, 미세먼지 등) 유형을 식별하여 청정 강도 및 순환 방향 선제 제어</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: LG전자 H&amp;A(Home Appliance &amp; Air Solution) 핵심 기술 백서 및 CES/IFA 공개 라인업</span>
+              <span class="slide-page-indicator"><span>02</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- ==================== SLIDE 3: MARKET OUTLOOK & BUSINESS IMPLICATIONS ==================== -->
+          <section class="slide" data-slide="2" data-title="03. 시장 전망 및 비즈니스 시사점">
+            <header class="slide-header">
+              <div class="header-left">
+                <div class="eyebrow">
+                  <span class="badge">SLIDE 03</span>
+                  <span>MARKET OUTLOOK &amp; BUSINESS STRATEGY</span>
+                </div>
+                <h1 class="slide-title">시장 전망 및 <span class="accent">비즈니스 시사점</span></h1>
+                <p class="slide-subtitle">단발성 하드웨어 판매에서 ‘AI 가전 구독(Subscription) + 스마트홈 플랫폼’ 순환 수익 모델로 재편</p>
+              </div>
+              <div class="brand-mark">
+                <span class="brand-circle">LG</span>
+                <span>AI 가전 트렌드 보고서 v2</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="takeaway-banner">
+                <p><strong>Strategic Shift:</strong> 가전 교체 주기 장기화 한계를 <strong class="red">‘AI 가전 구독 경제 + 공간 솔루션(B2B·모빌리티)’</strong> 결합으로 돌파하며 고수익 반복 매출(Recurring Revenue) 구조 안착</p>
+                <span class="takeaway-tag">구독·플랫폼 동반 성장</span>
+              </div>
+
+              <div class="grid-2col">
+                <!-- Left: KPIs & Subscription Revenue Trajectory -->
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <span class="card-num">1</span>
+                      핵심 성과 지표 및 AI·구독 성장 추이
+                    </div>
+                  </div>
+
+                  <div class="kpi-row">
+                    <div class="kpi-box primary">
+                      <div class="kpi-label">가전 구독 연매출 돌파</div>
+                      <div class="kpi-val">2조 원+</div>
+                      <div class="kpi-sub">전년 대비 50% 이상 고성장</div>
+                    </div>
+                    <div class="kpi-box">
+                      <div class="kpi-label">대형가전 구독 선택 비중</div>
+                      <div class="kpi-val">35%+</div>
+                      <div class="kpi-sub">국내 베스트샵 구매 고객 기준</div>
+                    </div>
+                    <div class="kpi-box">
+                      <div class="kpi-label">글로벌 AI 가전 시장 CAGR</div>
+                      <div class="kpi-val">~18.5%</div>
+                      <div class="kpi-sub">온디바이스 AI 탑재율 급증</div>
+                    </div>
+                  </div>
+
+                  <div class="chart-box">
+                    <div class="chart-title">
+                      LG전자 가전 구독(케어십 포함) 매출 성장 추이 및 전망
+                      <span>(단위: 조 원, 추정치 포함)</span>
+                    </div>
+                    <div class="bar-list">
+                      <div class="bar-item">
+                        <span class="bar-year">2022년</span>
+                        <div class="bar-track"><div class="bar-fill" style="width: 34%;"></div></div>
+                        <span class="bar-num">0.85조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year">2023년</span>
+                        <div class="bar-track"><div class="bar-fill" style="width: 46%;"></div></div>
+                        <span class="bar-num">1.13조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year accent">2024년</span>
+                        <div class="bar-track"><div class="bar-fill accent" style="width: 78%;"></div></div>
+                        <span class="bar-num accent">1.90조+</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year accent">2026년(E)</span>
+                        <div class="bar-track"><div class="bar-fill accent" style="width: 100%;"></div></div>
+                        <span class="bar-num accent">2.50조+</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: 3 Strategic Implications -->
+                <div class="card accent-top">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <span class="card-num">2</span>
+                      향후 3대 비즈니스 전략 시사점
+                    </div>
+                  </div>
+
+                  <div class="pillar-list">
+                    <div class="pillar-item">
+                      <div class="pillar-icon">A</div>
+                      <div class="pillar-content">
+                        <h4>AI 케어 결합형 ‘구독(Subscription) 락인(Lock-in)’</h4>
+                        <p>AI가 소모품 교체 시점과 고장 징후를 ThinQ로 사전 진단하고, 전문 케어 매니저 방문 서비스와 결합해 고객 이탈률 최소화 및 아시아·글로벌 시장으로 구독 모델 확산</p>
+                      </div>
+                    </div>
+
+                    <div class="pillar-item">
+                      <div class="pillar-icon">B</div>
+                      <div class="pillar-content">
+                        <h4>고효율 AI 코어테크를 통한 글로벌 탄소·에너지 규제 선점</h4>
+                        <p>북미·유럽의 고효율 가전 보조금 및 에너지 규제 강화에 대응해, AI 절전 모드 및 히트펌프 AI 제어 기술을 프리미엄 시장 점유율 확대의 핵심 무기로 활용</p>
+                      </div>
+                    </div>
+
+                    <div class="pillar-item">
+                      <div class="pillar-icon">C</div>
+                      <div class="pillar-content">
+                        <h4>가정을 넘어 ‘모빌리티·상업 공간(B2B)’으로 AI 홈 확장</h4>
+                        <p>스마트 모듈러 주택(스마트코티지), 호텔·오피스 빌딩 공조(HVAC), 소프트웨어 중심 차량(SDV)까지 공감지능 생태계를 확장하여 공간 솔루션 기업으로 밸류에이션 재평가</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: LG전자 실적 발표 자료, 글로벌 스마트홈 시장 전망 및 미래비전 2030 종합</span>
+              <span class="slide-page-indicator"><span>03</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- ==================== SLIDE 4: GLOBAL GDP COMPARISON & REGIONAL STRATEGY ==================== -->
+          <section class="slide" data-slide="3" data-title="04. 세계 주요국 명목 GDP 비교 및 권역별 시장 시사점">
+            <header class="slide-header">
+              <div class="header-left">
+                <div class="eyebrow">
+                  <span class="badge">SLIDE 04</span>
+                  <span>GLOBAL MACROECONOMY &amp; GDP COMPARISON</span>
+                </div>
+                <h1 class="slide-title">세계 주요국 <span class="accent">명목 GDP 비교</span> 및 권역별 시장 시사점</h1>
+                <p class="slide-subtitle">IMF 세계경제전망(WEO) 기준 글로벌 경제 규모 순위와 주요 경제권별 AI 가전 공략 방향</p>
+              </div>
+              <div class="brand-mark">
+                <span class="brand-circle">LG</span>
+                <span>AI 가전 트렌드 보고서 v2</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="takeaway-banner">
+                <p><strong>Macro Insight:</strong> <strong>미국·중국(G2)</strong>이 글로벌 GDP의 40% 이상을 차지하는 가운데, <strong class="red">인도(세계 5~6위권)</strong>의 고성장과 <strong>선진국(유럽·일본·한국)</strong>의 고부가 전환이 맞물리며 권역별 차별화된 가전 포트폴리오 전략 필수</p>
+                <span class="takeaway-tag">IMF WEO 2025–2026 기준</span>
+              </div>
+
+              <div class="grid-2col">
+                <!-- Left: Major Countries Nominal GDP Comparison Chart -->
+                <div class="card">
+                  <div class="card-header" style="margin-bottom: 4px;">
+                    <div class="card-title">
+                      <span class="card-num">1</span>
+                      세계 주요국 명목 GDP 규모 및 순위 비교
+                    </div>
+                    <span style="font-size: 11px; color: var(--text-caption); font-weight: 600;">단위: 조 달러 (USD Trillion)</span>
+                  </div>
+
+                  <div class="kpi-row">
+                    <div class="kpi-box">
+                      <div class="kpi-label">1위 미국 (US)</div>
+                      <div class="kpi-val">$30.8T</div>
+                      <div class="kpi-sub">북미 프리미엄 최대 시장</div>
+                    </div>
+                    <div class="kpi-box">
+                      <div class="kpi-label">5~6위 인도 (IN)</div>
+                      <div class="kpi-val">~6.5%↑</div>
+                      <div class="kpi-sub">주요국 중 최고 실질성장률</div>
+                    </div>
+                    <div class="kpi-box primary">
+                      <div class="kpi-label">12위 대한민국 (KR)</div>
+                      <div class="kpi-val">$1.9~2.2T</div>
+                      <div class="kpi-sub">1인당 GDP $3.6만~4.3만</div>
+                    </div>
+                  </div>
+
+                  <div class="chart-box">
+                    <div class="bar-list">
+                      <div class="bar-item">
+                        <span class="bar-year">#1 미국</span>
+                        <div class="bar-track"><div class="bar-fill dark" style="width: 100%;"></div></div>
+                        <span class="bar-num">$30.77조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year">#2 중국</span>
+                        <div class="bar-track"><div class="bar-fill dark" style="width: 64%;"></div></div>
+                        <span class="bar-num">$19.63조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year">#3 독일</span>
+                        <div class="bar-track"><div class="bar-fill" style="width: 17%;"></div></div>
+                        <span class="bar-num">$5.05조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year">#4 일본</span>
+                        <div class="bar-track"><div class="bar-fill" style="width: 15%;"></div></div>
+                        <span class="bar-num">$4.44조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year">#5 영국</span>
+                        <div class="bar-track"><div class="bar-fill" style="width: 13.5%;"></div></div>
+                        <span class="bar-num">$4.00조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year accent">#6 인도</span>
+                        <div class="bar-track"><div class="bar-fill accent" style="width: 13%;"></div></div>
+                        <span class="bar-num accent">$3.92조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year">#7 프랑스</span>
+                        <div class="bar-track"><div class="bar-fill" style="width: 11.5%;"></div></div>
+                        <span class="bar-num">$3.37조</span>
+                      </div>
+                      <div class="bar-item">
+                        <span class="bar-year accent">#12 대한민국</span>
+                        <div class="bar-track"><div class="bar-fill accent" style="width: 7.5%;"></div></div>
+                        <span class="bar-num accent">$1.88~2.25조</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Regional Economic Characteristics & Appliance Strategy -->
+                <div class="card accent-top">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <span class="card-num">2</span>
+                      주요 경제권별 GDP 특성 및 LG 가전 전략 시사점
+                    </div>
+                  </div>
+
+                  <div class="pillar-list">
+                    <div class="pillar-item">
+                      <div class="pillar-icon">G1</div>
+                      <div class="pillar-content">
+                        <h4>북미(미국 $30.8조): 압도적 구매력 기반 프리미엄 AI 홈 주도</h4>
+                        <p>높은 1인당 소득과 대형 주택 거주 특성에 맞춰 대용량 일체형 세탁건조기(워시콤보·워시타워) 및 빌트인 키친 패키지 중심으로 시장 점유율 1위 공고화</p>
+                      </div>
+                    </div>
+
+                    <div class="pillar-item">
+                      <div class="pillar-icon">EU</div>
+                      <div class="pillar-content">
+                        <h4>유럽(독일·영국·프랑스 합산 $12.4조+): 친환경·고효율 전환 수요</h4>
+                        <p>성숙기 경제권이나 탄소중립 및 에너지 비용 절감 니즈가 극대화됨에 따라, AI 절전 코어테크 가전 및 고효율 히트펌프 냉난방공조(HVAC) B2B 사업 집중 확대</p>
+                      </div>
+                    </div>
+
+                    <div class="pillar-item">
+                      <div class="pillar-icon">EM</div>
+                      <div class="pillar-content">
+                        <h4>글로벌 사우스(인도 $3.9조→$4.1조+) &amp; 한국 본원 시장</h4>
+                        <p><strong>[인도]</strong> 세계 최고 수준 경제성장률과 중산층 급증에 발맞춰 현지 맞춤형 AI 가전 및 생산·R&amp;D 완결 체제 구축<br/><strong>[한국]</strong> 성숙 내수 시장을 돌파하기 위해 ‘가전 구독 + AI 케어십’ 모델을 안착시키고 아시아 전역으로 확산</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: IMF World Economic Outlook (2025–2026 명목 GDP 전망치) 및 글로벌 권역별 시장 분석</span>
+              <span class="slide-page-indicator"><span>04</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- ==================== SLIDE 5: PYTHON-API-LGE-TREND LIVE MARKET & NEWS ==================== -->
+          <section class="slide" data-slide="4" data-title="05. 실시간 LG전자 시장 지표 · 환율 및 AI 가전 뉴스 (python-api-lge-trend)">
+            <header class="slide-header">
+              <div class="header-left">
+                <div class="eyebrow">
+                  <span class="badge">SLIDE 05</span>
+                  <span>PYTHON-API-LGE-TREND · LIVE MARKET &amp; NEWS</span>
+                </div>
+                <h1 class="slide-title">실시간 <span class="accent">LG전자 시장 지표 · 환율</span> 및 AI 가전 최신 뉴스</h1>
+                <p class="slide-subtitle">네이버 금융(066570) 주가·시세, 글로벌 실시간 환율(USD/EUR), 구글 뉴스 RSS 최신 헤드라인 5건 연동</p>
+              </div>
+              <div class="brand-mark">
+                <span class="brand-circle">LG</span>
+                <span>python-api-lge-trend</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="takeaway-banner">
+                <p><strong>Live Data Pipeline:</strong> <strong class="red">python-api-lge-trend</strong> 스킬(`fetch_lg_live_market.py`)을 통해 수집된 LG전자 실시간 주가·환율 지표와 구글 뉴스 RSS 기반 <strong>‘LG전자 AI 가전’ 최신 헤드라인 5건</strong>을 실시간 모니터링</p>
+                <button class="sync-btn" id="liveSyncBtn" onclick="syncLiveMarketData()">실시간 환율 API 동기화 ↻</button>
+              </div>
+
+              <div class="grid-2col">
+                <!-- Left: Real-time Stock & Global Exchange Rate Metrics -->
+                <div class="card">
+                  <div class="card-header">
+                    <div class="card-title">
+                      <span class="card-num">1</span>
+                      LG전자(066570) 시세 및 글로벌 환율 지표
+                    </div>
+                    <span style="font-size: 11px; color: var(--text-caption); font-weight: 600;" id="syncTimestamp">수집 기준: 2026-11-09 KST</span>
+                  </div>
+
+                  <div class="kpi-row">
+                    <div class="kpi-box primary">
+                      <div class="kpi-label">LG전자 (066570) 현재가</div>
+                      <div class="kpi-val" id="slideStockPrice">135,900원</div>
+                      <div class="kpi-sub" id="slideStockRate">전일대비 -1.95% (KRX)</div>
+                    </div>
+                    <div class="kpi-box">
+                      <div class="kpi-label">USD / KRW 실시간 환율</div>
+                      <div class="kpi-val" id="slideUsdKrw">1,358.73원</div>
+                      <div class="kpi-sub">북미 수출·결제 기준 환율</div>
+                    </div>
+                    <div class="kpi-box">
+                      <div class="kpi-label">USD / EUR (EUR/KRW)</div>
+                      <div class="kpi-val" id="slideUsdEur">0.8957</div>
+                      <div class="kpi-sub" id="slideEurKrw">1 EUR ≈ 1,517.02 KRW</div>
+                    </div>
+                  </div>
+
+                  <div class="pillar-list" style="margin-top: 4px;">
+                    <div class="pillar-item">
+                      <div class="pillar-icon">KRX</div>
+                      <div class="pillar-content">
+                        <h4>밸류에이션 리레이팅 요인: 가전 구독 &amp; B2B 공조(HVAC)</h4>
+                        <p>전통 하드웨어 제조사 멀티플에서 벗어나 연 2조 원+ 규모의 가전 구독(HaaS) 및 북미 AI 데이터센터 냉각 솔루션 수주 확대로 중장기 수익성 방어</p>
+                      </div>
+                    </div>
+
+                    <div class="pillar-item">
+                      <div class="pillar-icon">FX</div>
+                      <div class="pillar-content">
+                        <h4>환율 민감도 및 권역별 헷지(Hedge) 전략 (`USD/KRW 1,358원대`)</h4>
+                        <p>강달러 기조 유지 시 북미 프리미엄 가전 달러 매출의 원화 환산 이익이 개선되며, 미국 테네시·멕시코·인도 등 현지 생산지 다변화로 관세·환율 리스크 최소화</p>
+                      </div>
+                    </div>
+
+                    <div class="pillar-item">
+                      <div class="pillar-icon">API</div>
+                      <div class="pillar-content">
+                        <h4>데이터 파이프라인 구조 (`fetch_lg_live_market.py`)</h4>
+                        <p>네이버 금융(`m.stock.naver.com`) + Frankfurter 환율 API + Google News RSS XML 파싱 및 오프라인 자동 폴백(Fallback) 내장</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right: Google News RSS Top 5 Headlines -->
+                <div class="card accent-top">
+                  <div class="card-header" style="margin-bottom: 6px;">
+                    <div class="card-title">
+                      <span class="card-num">2</span>
+                      구글 뉴스 실시간 ‘LG전자 AI 가전’ 최신 헤드라인 (5건)
+                    </div>
+                    <span style="font-size: 11px; color: var(--lg-red); font-weight: 700;">Google News RSS</span>
+                  </div>
+
+                  <div class="news-feed-list" id="newsFeedList">
+                    <a class="news-card-item" href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE52VmNKQ0otYXRnbV9JQVluMVAxYzdmV1c5WDJfUi1WWFRBUVFLME1GWHJqay1HTFJ5am9vN2dCQUltTmU2cTZIaVh0UlpNRFRiRFI4NFpTVXNtZTRHTk95UUszc216cjND?oc=5" target="_blank" rel="noopener noreferrer">
+                      <div class="news-item-top">
+                        <span class="news-rank">NEWS 01</span>
+                        <span class="news-date">Sun, 08 Nov 2026 · CBC뉴스</span>
+                      </div>
+                      <div class="news-headline">[기업家] LG전자 ⑰ㅣ 가전 넘어 AI·전장·로봇으로…미래 성장동력 가속화</div>
+                    </a>
+
+                    <a class="news-card-item" href="https://news.google.com/rss/articles/CBMiqwJBVV95cUxNUmE3NzYtMGJNV3dWNmpsclNYZ3R6bm91bjRvcEpFc1MycEhQTl9FOWpJVU1ERlFTeGluNjRQRUNDRjJVYnNIR3F6SVhxcGtBekQ0UEI2QzBNTHViam93a1RtRmd5YVdGd3ZSN24tN1hjeGFlNFFKbzg2WHY3NVVzb3pmM3ZrQlRPengwbkJ4VzBfU2JiU1YtMzBCZXRSVzF2M2dybUF3SGlxVFVvQlM1SmNLRnRGLWFaOGJTa0dLS3VWRVZocVdwY29STkRoWm9EVW1Dcks1X2piT3lsdkpMbWwxVmhyMFUxM3lmTTJHVUhxcHgydVNJYURqa3R5WG1QeDA4Z3BpWmdaYnpGemgtOXo0eGJNZEZqbjJQRXJNZkxzSkUwQmpmaDlXaw?oc=5" target="_blank" rel="noopener noreferrer">
+                      <div class="news-item-top">
+                        <span class="news-rank">NEWS 02</span>
+                        <span class="news-date">Sun, 08 Nov 2026 · AIMKT</span>
+                      </div>
+                      <div class="news-headline">[LG전자] 스펙 대신 ‘마음의 여유’를 팔다… 2026 라이프스 굿 캠페인과 가전 팅글</div>
+                    </a>
+
+                    <a class="news-card-item" href="https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9SeG4tN3YyMlJuT19XNkloSTdrVjBoUXd4d240ZUZvYWYyR2RXRkZRQndYV1VFUlNjWmN2NTlOVmhobkFSVUJSRG5LdjhHdHFvV2plaHVHQkcyTXM5ZlZkbGRvSHo0b0E?oc=5" target="_blank" rel="noopener noreferrer">
+                      <div class="news-item-top">
+                        <span class="news-rank">NEWS 03</span>
+                        <span class="news-date">Wed, 14 Oct 2026 · 인공지능신문</span>
+                      </div>
+                      <div class="news-headline">LG전자, AI 가전·히트펌프·태양광 결합한 에너지 자립형 주택 선보여</div>
+                    </a>
+
+                    <a class="news-card-item" href="https://news.google.com/rss/articles/CBMiZEFVX3lxTE9UTEpOZ2xwZTFQbHF1czhvQ3M0d1RPVmktWFMwQmI1RTFlYmtDMXJYeXJpUFVLWXJHQWZSaDEwd1k1bUNSNzdPX0tacC1pcHB6TEtoSTM2aVVKVHlkQU9XRENDcXo?oc=5" target="_blank" rel="noopener noreferrer">
+                      <div class="news-item-top">
+                        <span class="news-rank">NEWS 04</span>
+                        <span class="news-date">Wed, 14 Oct 2026 · 매일일보</span>
+                      </div>
+                      <div class="news-headline">LG전자, AI 가전·HVAC 결합한 미래형 주택 선봬</div>
+                    </a>
+
+                    <a class="news-card-item" href="https://news.google.com/rss/articles/CBMiaEFVX3lxTE9kWGw3cDIzS3ZzcTZlbjhMUTFyRVEwZlhxeGV5dXFhTlhQRDRodnN4RzlaMGNaOTR1dU0yRDZSUktVazdSd0QxWXRHT2pGY3BCeFA3TDFiSUs5ODZmc3hwWU5jNEZ3QVgw?oc=5" target="_blank" rel="noopener noreferrer">
+                      <div class="news-item-top">
+                        <span class="news-rank">NEWS 05</span>
+                        <span class="news-date">Thu, 09 Jul 2026 · 아이티데일리</span>
+                      </div>
+                      <div class="news-headline">AI 가전 경쟁 2막…삼성ㆍLG전자, ‘스스로 판단하는 AI’ 승부</div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: python-api-lge-trend (Naver Finance 066570 · Frankfurter FX API · Google News RSS 실시간 수집)</span>
+              <span class="slide-page-indicator"><span>05</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- ==================== SLIDE 6: APPLIANCE PERFORMANCE & SUBSCRIPTION ANALYSIS ==================== -->
+          <section class="slide" data-slide="5" data-title="06. 가전 실적 구독분석 (제품군별 매출·마진 & 권역별 구독 전환율)">
+            <header class="slide-header">
+              <div class="header-left">
+                <div class="eyebrow">
+                  <span class="badge">SLIDE 06</span>
+                  <span>APPLIANCE PERFORMANCE &amp; SUBSCRIPTION ANALYTICS</span>
+                </div>
+                <h1 class="slide-title">가전 실적 구독분석: <span class="accent">제품군별 매출·마진</span> 및 <span class="accent">권역별 구독 전환율</span></h1>
+                <p class="slide-subtitle">04_AG_Analytics_lg_appliance_data.csv (총 920건, 2026.01~09) 기반 수익성 및 구독 전환 성과 시각화</p>
+              </div>
+              <div class="brand-mark">
+                <span class="brand-circle">LG</span>
+                <span>가전 실적 구독분석</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="takeaway-banner">
+                <p><strong>Data Analytics Insight:</strong> 누적 매출 <strong>2,200.4억 원(영업이익 647.7억 원)</strong> 중 <strong class="red">에어솔루션(693.7억·마진 30.0%)</strong>과 <strong class="red">OLED evo(마진 30.4%)</strong>가 실적을 견인하며, 구독 전환율 <strong>22% 이상 구간에서 마진율이 +11.3%p~14.1%p 급증</strong></p>
+                <button class="sync-btn" id="cleanToggleBtn" onclick="toggleCleanMargin()">이상치 정제 보기 (시제품 0원 18건 보정)</button>
+              </div>
+
+              <div class="grid-2col">
+                <!-- Left Chart Card: Product Line Revenue & Operating Margin Chart -->
+                <div class="card">
+                  <div class="card-header" style="margin-bottom: 6px;">
+                    <div class="card-title">
+                      <span class="card-num">1</span>
+                      제품군별 누적 매출액 및 영업 마진율 차트
+                    </div>
+                    <span style="font-size: 11px; color: var(--text-caption); font-weight: 600;" id="marginModeLabel">기준: 전체 920건 (원본)</span>
+                  </div>
+
+                  <div class="kpi-row">
+                    <div class="kpi-box primary">
+                      <div class="kpi-label">총 누적 매출액 (920건)</div>
+                      <div class="kpi-val">2,200.4억</div>
+                      <div class="kpi-sub">영업이익 647.7억 원</div>
+                    </div>
+                    <div class="kpi-box">
+                      <div class="kpi-label">전사 평균 영업 마진율</div>
+                      <div class="kpi-val" id="totalMarginVal">29.4%</div>
+                      <div class="kpi-sub" id="totalMarginSub">시제품 0원 제외 시 30.1%</div>
+                    </div>
+                    <div class="kpi-box">
+                      <div class="kpi-label">최고 마진 주력 제품군</div>
+                      <div class="kpi-val">30.4%</div>
+                      <div class="kpi-sub">OLED evo · WashTower(30.3%)</div>
+                    </div>
+                  </div>
+
+                  <div class="chart-box">
+                    <div class="chart-title">
+                      제품군별 매출 규모(막대) 및 영업이익 마진율(우측 수치)
+                      <span>단위: 억 원 / 마진율(%)</span>
+                    </div>
+                    <div class="bar-list" style="gap: 8px;">
+                      <div class="bar-item" style="grid-template-columns: 142px 1fr 112px;">
+                        <span class="bar-year accent">Whisen &amp; HVAC</span>
+                        <div class="bar-track"><div class="bar-fill accent" style="width: 100%;"></div></div>
+                        <span class="bar-num accent">693.7억 (30.0%)</span>
+                      </div>
+                      <div class="bar-item" style="grid-template-columns: 142px 1fr 112px;">
+                        <span class="bar-year">OLED evo (TV)</span>
+                        <div class="bar-track"><div class="bar-fill dark" style="width: 72.1%;"></div></div>
+                        <span class="bar-num">500.5억 (30.4%)</span>
+                      </div>
+                      <div class="bar-item" style="grid-template-columns: 142px 1fr 112px;">
+                        <span class="bar-year">WashTower (리빙)</span>
+                        <div class="bar-track"><div class="bar-fill dark" style="width: 66.0%;"></div></div>
+                        <span class="bar-num">458.1억 (30.3%)</span>
+                      </div>
+                      <div class="bar-item" style="grid-template-columns: 142px 1fr 112px;">
+                        <span class="bar-year">DIOS &amp; Objet (주방)</span>
+                        <div class="bar-track"><div class="bar-fill" style="width: 50.6%;"></div></div>
+                        <span class="bar-num">351.3억 (29.7%)</span>
+                      </div>
+                      <div class="bar-item" style="grid-template-columns: 142px 1fr 112px;">
+                        <span class="bar-year" id="stanbyName">StanbyME (신가전)</span>
+                        <div class="bar-track"><div class="bar-fill" id="stanbyBar" style="width: 28.4%;"></div></div>
+                        <span class="bar-num" id="stanbyStat">196.9억 (22.4%)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="pillar-item" style="margin-top: 8px; padding: 8px 12px;">
+                    <div class="pillar-icon">!</div>
+                    <div class="pillar-content">
+                      <h4>데이터 정합성 노트 (결측치 23건 · 매출 0원 이상치 18건)</h4>
+                      <p>StanbyME 시제품 무상공급 18건(매출 0원, 원가 15.0억)으로 인해 명목 마진이 22.4%로 낮아지나, 정상 판매분(160건) 기준 실질 마진율은 <strong style="color: var(--lg-red);">30.1%</strong>로 주력 가전과 동등한 고수익 달성</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Right Chart Card: Regional Subscription Conversion Rate Chart -->
+                <div class="card accent-top">
+                  <div class="card-header" style="margin-bottom: 6px;">
+                    <div class="card-title">
+                      <span class="card-num">2</span>
+                      권역별 구독 전환율 및 구독 구간별 수익성 차트
+                    </div>
+                    <span style="font-size: 11px; color: var(--lg-red); font-weight: 700;">평균 전환율 33.3%</span>
+                  </div>
+
+                  <div class="chart-box" style="margin-bottom: 8px;">
+                    <div class="chart-title">
+                      4대 권역별 평균 구독 전환율 및 고구독(≥35%) 달성 비중
+                      <span>평균 전환율 (고구독 비중)</span>
+                    </div>
+                    <div class="bar-list" style="gap: 8px;">
+                      <div class="bar-item" style="grid-template-columns: 126px 1fr 116px;">
+                        <span class="bar-year accent">인도·아시아(APAC)</span>
+                        <div class="bar-track"><div class="bar-fill accent" style="width: 92%;"></div></div>
+                        <span class="bar-num accent">33.7% (고구독 57.6%)</span>
+                      </div>
+                      <div class="bar-item" style="grid-template-columns: 126px 1fr 116px;">
+                        <span class="bar-year accent">유럽(Europe)</span>
+                        <div class="bar-track"><div class="bar-fill accent" style="width: 90%;"></div></div>
+                        <span class="bar-num accent">33.5% (고구독 57.8%)</span>
+                      </div>
+                      <div class="bar-item" style="grid-template-columns: 126px 1fr 116px;">
+                        <span class="bar-year">북미(North America)</span>
+                        <div class="bar-track"><div class="bar-fill dark" style="width: 86%;"></div></div>
+                        <span class="bar-num">33.0% (고구독 57.7%)</span>
+                      </div>
+                      <div class="bar-item" style="grid-template-columns: 126px 1fr 116px;">
+                        <span class="bar-year">한국(Korea)</span>
+                        <div class="bar-track"><div class="bar-fill dark" style="width: 84%;"></div></div>
+                        <span class="bar-num">32.8% (고구독 56.5%)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="chart-box">
+                    <div class="chart-title">
+                      구독 전환율 구간별 영업 마진율 &amp; ThinQ 만족도 상관관계
+                      <span>구독 확대 시 마진 급증</span>
+                    </div>
+                    <div class="vs-table" style="margin-top: 2px; gap: 6px;">
+                      <div class="vs-row" style="grid-template-columns: 112px 1fr 20px 1.15fr; padding: 7px 10px;">
+                        <span class="vs-label">저구독 (&lt;22%)</span>
+                        <span class="vs-old">평균 마진 20.2% (171건)</span>
+                        <span class="vs-arrow">→</span>
+                        <span class="vs-old">ThinQ 만족도 75.8점</span>
+                      </div>
+                      <div class="vs-row" style="grid-template-columns: 112px 1fr 20px 1.15fr; padding: 7px 10px;">
+                        <span class="vs-label">중구독 (22~35%)</span>
+                        <span class="vs-new">평균 마진 34.3% (+14.1%p)</span>
+                        <span class="vs-arrow">→</span>
+                        <span class="vs-new">ThinQ 만족도 92.4점</span>
+                      </div>
+                      <div class="vs-row" style="grid-template-columns: 112px 1fr 20px 1.15fr; padding: 7px 10px;">
+                        <span class="vs-label">고구독 (≥35%)</span>
+                        <span class="vs-new">평균 마진 31.5% (515건 주력)</span>
+                        <span class="vs-arrow">→</span>
+                        <span class="vs-new">북미 Whisen 35.3% 최고</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: 04_AG_Analytics_lg_appliance_data.csv (920건 전수 집계 · 사업본부/권역별 성과 분석)</span>
+              <span class="slide-page-indicator"><span>06</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- =================================================================
+               SLIDE 07: AI 심층 분석 (워시타워 만족도 회귀 추정 복원 및 전후 비교)
+               ================================================================= -->
+          <section class="slide" data-slide="6" data-title="07. AI 심층 분석 (워시타워 만족도 회귀 추정 복원 및 전후 비교)">
+            <header class="slide-header">
+              <div class="slide-title-group">
+                <span class="slide-eyebrow">07 · AI DEEP ANALYTICS &amp; REGRESSION IMPUTATION</span>
+                <h1 class="slide-title">AI 심층 분석: 워시타워 만족도 결측치(23건) 회귀 복원 및 전후 비교</h1>
+              </div>
+              <div class="lg-brand-badge">
+                <span class="lg-dot"></span>
+                <span>OLS REGRESSION · R² = 96.9%</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="grid-2" style="grid-template-columns: 1.08fr 0.92fr;">
+                <!-- 좌측: 회귀 추정 모델 공식 및 23건 결측치 복원표 (Imputation Table) -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <span class="card-tag">OLS MULTIPLE LINEAR REGRESSION</span>
+                      <span class="card-step">Train N = 171 · Missing N = 23</span>
+                    </div>
+                    <h2 class="card-title">워시타워(WashTower &amp; Tromm) 결측치 23건 회귀 복원표</h2>
+                    <p class="card-desc">정상 수집된 워시타워 171건을 학습하여 <strong>구독 전환율(%)</strong>과 <strong>영업 마진율(%)</strong> 기반 다중선형회귀 모델로 비어있던 23건(40번 배수 ID)의 만족도를 정밀 복원했습니다.</p>
+                  </div>
+
+                  <!-- 회귀 모델 수식 박스 -->
+                  <div class="formula-box">
+                    <span><strong>회귀 추정식:</strong> Ŷ(만족도) = 56.31 + 0.251×(구독전환율%) + 0.846×(마진율%)</span>
+                    <span class="formula-r2">설명력 R² = 0.9691 (96.9%)</span>
+                  </div>
+
+                  <!-- 23건 전체 복원표 (스크롤 지원) -->
+                  <div class="imputation-table-wrap">
+                    <table class="imputation-table">
+                      <thead>
+                        <tr>
+                          <th>순번</th>
+                          <th>Record ID</th>
+                          <th>일자 / 권역</th>
+                          <th style="text-align: right;">구독전환율</th>
+                          <th style="text-align: right;">영업마진율</th>
+                          <th style="text-align: center;">보정 전</th>
+                          <th style="text-align: right;">회귀 복원(Ŷ)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>01</td>
+                          <td class="id-cell">LG-2026-0040</td>
+                          <td>2026-09-10 · 유럽(Europe)</td>
+                          <td class="num-cell">25.5%</td>
+                          <td class="num-cell">35.0%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">92.3점</span></td>
+                        </tr>
+                        <tr>
+                          <td>02</td>
+                          <td class="id-cell">LG-2026-0080</td>
+                          <td>2026-09-26 · 북미(NA)</td>
+                          <td class="num-cell">38.9%</td>
+                          <td class="num-cell">24.1%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">86.5점</span></td>
+                        </tr>
+                        <tr>
+                          <td>03</td>
+                          <td class="id-cell">LG-2026-0120</td>
+                          <td>2026-09-23 · 인도·아시아</td>
+                          <td class="num-cell">41.9%</td>
+                          <td class="num-cell">36.5%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">97.7점</span></td>
+                        </tr>
+                        <tr>
+                          <td>04</td>
+                          <td class="id-cell">LG-2026-0160</td>
+                          <td>2026-01-22 · 인도·아시아</td>
+                          <td class="num-cell">17.1%</td>
+                          <td class="num-cell">18.4%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">76.2점</span></td>
+                        </tr>
+                        <tr>
+                          <td>05</td>
+                          <td class="id-cell">LG-2026-0200</td>
+                          <td>2026-04-10 · 북미(NA)</td>
+                          <td class="num-cell">39.9%</td>
+                          <td class="num-cell">24.2%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">86.8점</span></td>
+                        </tr>
+                        <tr>
+                          <td>06</td>
+                          <td class="id-cell">LG-2026-0240</td>
+                          <td>2026-01-18 · 인도·아시아</td>
+                          <td class="num-cell">26.0%</td>
+                          <td class="num-cell">34.5%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">92.0점</span></td>
+                        </tr>
+                        <tr>
+                          <td>07</td>
+                          <td class="id-cell">LG-2026-0280</td>
+                          <td>2026-09-11 · 인도·아시아</td>
+                          <td class="num-cell">40.5%</td>
+                          <td class="num-cell">36.6%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">97.5점</span></td>
+                        </tr>
+                        <tr>
+                          <td>08</td>
+                          <td class="id-cell">LG-2026-0320</td>
+                          <td>2026-07-12 · 유럽(Europe)</td>
+                          <td class="num-cell">18.2%</td>
+                          <td class="num-cell">18.4%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">76.5점</span></td>
+                        </tr>
+                        <tr>
+                          <td>09</td>
+                          <td class="id-cell">LG-2026-0360</td>
+                          <td>2026-01-18 · 유럽(Europe)</td>
+                          <td class="num-cell">42.7%</td>
+                          <td class="num-cell">26.0%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">89.0점</span></td>
+                        </tr>
+                        <tr>
+                          <td>10</td>
+                          <td class="id-cell">LG-2026-0400</td>
+                          <td>2026-05-19 · 북미(NA)</td>
+                          <td class="num-cell">43.7%</td>
+                          <td class="num-cell">36.6%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">98.2점</span></td>
+                        </tr>
+                        <tr>
+                          <td>11</td>
+                          <td class="id-cell">LG-2026-0440</td>
+                          <td>2026-02-18 · 한국(Korea)</td>
+                          <td class="num-cell">15.9%</td>
+                          <td class="num-cell">20.1%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">77.3점</span></td>
+                        </tr>
+                        <tr>
+                          <td>12</td>
+                          <td class="id-cell">LG-2026-0480</td>
+                          <td>2026-02-25 · 유럽(Europe)</td>
+                          <td class="num-cell">19.0%</td>
+                          <td class="num-cell">18.6%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">76.8점</span></td>
+                        </tr>
+                        <tr>
+                          <td>13</td>
+                          <td class="id-cell">LG-2026-0520</td>
+                          <td>2026-03-13 · 인도·아시아</td>
+                          <td class="num-cell">18.5%</td>
+                          <td class="num-cell">18.9%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">76.9점</span></td>
+                        </tr>
+                        <tr>
+                          <td>14</td>
+                          <td class="id-cell">LG-2026-0560</td>
+                          <td>2026-04-20 · 인도·아시아</td>
+                          <td class="num-cell">19.7%</td>
+                          <td class="num-cell">18.2%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">76.6점</span></td>
+                        </tr>
+                        <tr>
+                          <td>15</td>
+                          <td class="id-cell">LG-2026-0600</td>
+                          <td>2026-07-20 · 북미(NA)</td>
+                          <td class="num-cell">41.3%</td>
+                          <td class="num-cell">37.2%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">98.2점</span></td>
+                        </tr>
+                        <tr>
+                          <td>16</td>
+                          <td class="id-cell">LG-2026-0640</td>
+                          <td>2026-04-23 · 한국(Korea)</td>
+                          <td class="num-cell">22.4%</td>
+                          <td class="num-cell">35.0%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">91.5점</span></td>
+                        </tr>
+                        <tr>
+                          <td>17</td>
+                          <td class="id-cell">LG-2026-0680</td>
+                          <td>2026-05-12 · 한국(Korea)</td>
+                          <td class="num-cell">37.9%</td>
+                          <td class="num-cell">26.7%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">88.4점</span></td>
+                        </tr>
+                        <tr>
+                          <td>18</td>
+                          <td class="id-cell">LG-2026-0720</td>
+                          <td>2026-01-26 · 유럽(Europe)</td>
+                          <td class="num-cell">39.9%</td>
+                          <td class="num-cell">25.1%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">87.6점</span></td>
+                        </tr>
+                        <tr>
+                          <td>19</td>
+                          <td class="id-cell">LG-2026-0760</td>
+                          <td>2026-08-13 · 유럽(Europe)</td>
+                          <td class="num-cell">19.6%</td>
+                          <td class="num-cell">19.0%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">77.3점</span></td>
+                        </tr>
+                        <tr>
+                          <td>20</td>
+                          <td class="id-cell">LG-2026-0800</td>
+                          <td>2026-08-28 · 유럽(Europe)</td>
+                          <td class="num-cell">41.8%</td>
+                          <td class="num-cell">24.2%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">87.3점</span></td>
+                        </tr>
+                        <tr>
+                          <td>21</td>
+                          <td class="id-cell">LG-2026-0840</td>
+                          <td>2026-07-20 · 인도·아시아</td>
+                          <td class="num-cell">39.9%</td>
+                          <td class="num-cell">22.4%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">85.3점</span></td>
+                        </tr>
+                        <tr>
+                          <td>22</td>
+                          <td class="id-cell">LG-2026-0880</td>
+                          <td>2026-01-22 · 유럽(Europe)</td>
+                          <td class="num-cell">45.6%</td>
+                          <td class="num-cell">37.3%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">99.3점</span></td>
+                        </tr>
+                        <tr>
+                          <td>23</td>
+                          <td class="id-cell">LG-2026-0920</td>
+                          <td>2026-06-22 · 북미(NA)</td>
+                          <td class="num-cell">40.7%</td>
+                          <td class="num-cell">36.4%</td>
+                          <td style="text-align: center;"><span class="null-badge">NULL</span></td>
+                          <td style="text-align: right;"><span class="pred-badge">97.3점</span></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- 우측: 보정 전후 비교 막대 차트 (Before vs. After Bar Chart) -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <span class="card-tag">BEFORE VS AFTER IMPUTATION</span>
+                      <span class="card-step">171건 → 194건 완전 복원</span>
+                    </div>
+                    <h2 class="card-title">워시타워 만족도 보정 전·후 비교 막대 차트</h2>
+                    <p class="card-desc">결측 제외 시 과대·과소 왜곡되던 권역별 평균 만족도를 194건 전수 기준으로 정밀 보정했습니다.</p>
+                  </div>
+
+                  <!-- 상단 3대 요약 지표 -->
+                  <div class="grid-3" style="gap: 10px;">
+                    <div class="kpi-box" style="padding: 9px 11px;">
+                      <span class="kpi-label">회귀 모형 설명력 (R²)</span>
+                      <div class="kpi-value" style="font-size: 19px;">96.9<span class="unit">%</span></div>
+                      <span class="kpi-delta">다중선형회귀 적합도 우수</span>
+                    </div>
+                    <div class="kpi-box" style="padding: 9px 11px;">
+                      <span class="kpi-label">결측 23건 복원 평균</span>
+                      <div class="kpi-value" style="font-size: 19px;">87.50<span class="unit">점</span></div>
+                      <span class="kpi-delta">최저 76.2점 ~ 최고 99.3점</span>
+                    </div>
+                    <div class="kpi-box" style="padding: 9px 11px;">
+                      <span class="kpi-label">워시타워 전체 보정 후</span>
+                      <div class="kpi-value" style="font-size: 19px;">90.04<span class="unit">점</span></div>
+                      <span class="kpi-delta">보정 전 90.39점 (-0.35p 보정)</span>
+                    </div>
+                  </div>
+
+                  <!-- 보정 전후 비교 듀얼 막대 차트 -->
+                  <div class="dual-bar-list">
+                    <!-- 1. 워시타워 전체 -->
+                    <div class="dual-bar-row">
+                      <div class="dual-bar-header">
+                        <span class="dual-bar-title">워시타워 전체 (Total · 171건 → 194건)</span>
+                        <span class="dual-bar-diff">90.39점 → <strong>90.04점 (-0.35p 정밀보정)</strong></span>
+                      </div>
+                      <div class="dual-tracks">
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag">보정 전</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill muted" style="width: 90.4%; height: 100%; font-size: 10px;">90.39점 (결측 23건 제외)</div>
+                          </div>
+                        </div>
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag" style="color: #A50034; font-weight: 700;">보정 후</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill" style="width: 90.0%; height: 100%; font-size: 10px;">90.04점 (194건 전수 복원)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 2. 북미 (North America) -->
+                    <div class="dual-bar-row">
+                      <div class="dual-bar-header">
+                        <span class="dual-bar-title">북미 (North America · 결측 5건 복원평균 93.40점)</span>
+                        <span class="dual-bar-diff">90.01점 → <strong>90.31점 (+0.30p 상승)</strong></span>
+                      </div>
+                      <div class="dual-tracks">
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag">보정 전</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill muted" style="width: 90.0%; height: 100%; font-size: 10px;">90.01점 (51건)</div>
+                          </div>
+                        </div>
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag" style="color: #A50034; font-weight: 700;">보정 후</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill" style="width: 90.3%; height: 100%; font-size: 10px;">90.31점 (56건 · 권역 1위 등극)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 3. 인도·아시아 (APAC) -->
+                    <div class="dual-bar-row">
+                      <div class="dual-bar-header">
+                        <span class="dual-bar-title">인도·아시아 (APAC · 결측 7건 복원평균 86.03점)</span>
+                        <span class="dual-bar-diff">90.90점 → <strong>90.23점 (-0.67p 착시제거)</strong></span>
+                      </div>
+                      <div class="dual-tracks">
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag">보정 전</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill muted" style="width: 90.9%; height: 100%; font-size: 10px;">90.90점 (44건)</div>
+                          </div>
+                        </div>
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag" style="color: #A50034; font-weight: 700;">보정 후</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill dark" style="width: 90.2%; height: 100%; font-size: 10px;">90.23점 (51건)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 4. 한국 (Korea) -->
+                    <div class="dual-bar-row">
+                      <div class="dual-bar-header">
+                        <span class="dual-bar-title">한국 (Korea · 결측 3건 복원평균 85.73점)</span>
+                        <span class="dual-bar-diff">90.16점 → <strong>89.80점 (-0.36p 보정)</strong></span>
+                      </div>
+                      <div class="dual-tracks">
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag">보정 전</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill muted" style="width: 90.2%; height: 100%; font-size: 10px;">90.16점 (34건)</div>
+                          </div>
+                        </div>
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag" style="color: #A50034; font-weight: 700;">보정 후</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill dark" style="width: 89.8%; height: 100%; font-size: 10px;">89.80점 (37건)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 5. 유럽 (Europe) -->
+                    <div class="dual-bar-row">
+                      <div class="dual-bar-header">
+                        <span class="dual-bar-title">유럽 (Europe · 결측 8건 복원평균 85.76점)</span>
+                        <span class="dual-bar-diff">90.49점 → <strong>89.73점 (-0.76p 착시제거)</strong></span>
+                      </div>
+                      <div class="dual-tracks">
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag">보정 전</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill muted" style="width: 90.5%; height: 100%; font-size: 10px;">90.49점 (42건)</div>
+                          </div>
+                        </div>
+                        <div class="dual-track-line">
+                          <span class="dual-track-tag" style="color: #A50034; font-weight: 700;">보정 후</span>
+                          <div class="bar-track" style="height: 15px;">
+                            <div class="bar-fill dark" style="width: 89.7%; height: 100%; font-size: 10px;">89.73점 (50건)</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 하단 핵심 인사이트 요약 -->
+                  <div class="summary-callout" style="margin-top: auto; padding: 9px 12px;">
+                    <p><strong>AI 회귀 보정 인사이트:</strong> 북미 권역은 고구독·고마진 구간의 결측치 5건(평균 <strong>93.40점</strong>)이 복원되면서 보정 후 <strong>90.31점(+0.30p)</strong>으로 상승해 워시타워 만족도 <strong>전체 권역 1위</strong>로 올라선 반면, 유럽·APAC은 저구독 구간의 누락분이 반영되며 과대 계상 착시(-0.76p, -0.67p)가 해소되었습니다.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: 04_AG_Analytics_lg_appliance_data.csv (워시타워 194건 중 171건 OLS 회귀 학습 · 23건 결측 복원)</span>
+              <span class="slide-page-indicator"><span>07</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- =================================================================
+               SLIDE 08: K-Means 클러스터링 산점도 차트 & 그룹별 영업 전략
+               ================================================================= -->
+          <section class="slide" data-slide="7" data-title="08. K-Means 클러스터링 (구독률·이익률 산점도 및 그룹별 영업 전략)">
+            <header class="slide-header">
+              <div class="slide-title-group">
+                <span class="slide-eyebrow">08 · K-MEANS CLUSTERING &amp; SALES STRATEGY MATRIX</span>
+                <h1 class="slide-title">구독률·이익률 기반 K-Means 군집(K=4) 산점도 및 그룹별 영업 전략</h1>
+              </div>
+              <div class="lg-brand-badge">
+                <span class="lg-dot"></span>
+                <span>K-MEANS (K=4) · N = 902 (시제품 18건 별도)</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="grid-2" style="grid-template-columns: 1.04fr 0.96fr;">
+                <!-- 좌측: K-Means (K=4) 산점도 차트 (Scatter Plot) -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <span class="card-tag">2D K-MEANS SCATTER PLOT</span>
+                      <span class="card-step">X축: 구독 전환율(%) · Y축: 영업 이익률(%)</span>
+                    </div>
+                    <h2 class="card-title">제품 실적 K-Means 4대 군집 산점도 및 중심점(Centroid) 분포</h2>
+                    <p class="card-desc">정상 매출 902건을 구독률과 이익률 2차원 평면에서 K-Means(K=4) 알고리즘으로 군집화한 결과, 사분면 경계(구독률 32% · 이익률 30%)를 기준으로 4개의 독립 군집이 명확히 분리되었습니다.</p>
+                  </div>
+
+                  <!-- 상단 4대 군집 범례 바 -->
+                  <div class="scatter-legend-bar">
+                    <div class="scatter-legend-item">
+                      <span class="legend-dot" style="background-color: #A50034;"></span>
+                      <span>C1 스타 (273건)</span>
+                    </div>
+                    <div class="scatter-legend-item">
+                      <span class="legend-dot" style="background-color: #111827;"></span>
+                      <span>C2 확장형 (242건)</span>
+                    </div>
+                    <div class="scatter-legend-item">
+                      <span class="legend-dot" style="background-color: #FFFFFF; border: 2px solid #A50034;"></span>
+                      <span>C3 일시불 (226건)</span>
+                    </div>
+                    <div class="scatter-legend-item">
+                      <span class="legend-dot" style="background-color: #6B7280;"></span>
+                      <span>C4 리빌딩 (161건)</span>
+                    </div>
+                  </div>
+
+                  <!-- SVG 산점도 차트 -->
+                  <div class="scatter-container">
+                    <svg viewBox="0 0 520 265" style="width: 100%; height: 100%; max-height: 245px; display: block;">
+                      <!-- 배경 그리드 영역 -->
+                      <rect x="55" y="20" width="435" height="215" fill="#F8F9FA" stroke="#E5E7EB" stroke-width="1" rx="4" />
+
+                      <!-- 가로 보조선 (Y축 이익률: 16%, 24%, 30% 기준선, 36%, 42%) -->
+                      <line x1="55" y1="208" x2="490" y2="208" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="55" y1="156" x2="490" y2="156" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="55" y1="117" x2="490" y2="117" stroke="#A50034" stroke-width="1.2" stroke-dasharray="4 3" />
+                      <line x1="55" y1="77" x2="490" y2="77" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="55" y1="38" x2="490" y2="38" stroke="#E5E7EB" stroke-width="1" />
+
+                      <!-- 세로 보조선 (X축 구독률: 15%, 25%, 32% 기준선, 40%, 45%) -->
+                      <line x1="109" y1="20" x2="109" y2="235" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="216" y1="20" x2="216" y2="235" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="291" y1="20" x2="291" y2="235" stroke="#A50034" stroke-width="1.2" stroke-dasharray="4 3" />
+                      <line x1="377" y1="20" x2="377" y2="235" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="431" y1="20" x2="431" y2="235" stroke="#E5E7EB" stroke-width="1" />
+
+                      <!-- 사분면 경계 라벨 -->
+                      <text x="295" y="31" font-size="9" font-weight="700" fill="#A50034">구독 기준선 (32%)</text>
+                      <text x="60" y="113" font-size="9" font-weight="700" fill="#A50034">이익률 기준선 (30%)</text>
+
+                      <!-- 4대 군집 영역 바운딩 타원 -->
+                      <ellipse cx="407" cy="68" rx="48" ry="22" fill="#FFFFFF" fill-opacity="0.7" stroke="#A50034" stroke-width="1.2" stroke-dasharray="3 2" />
+                      <ellipse cx="378" cy="151" rx="44" ry="20" fill="#FFFFFF" fill-opacity="0.7" stroke="#111827" stroke-width="1.2" stroke-dasharray="3 2" />
+                      <ellipse cx="211" cy="86" rx="46" ry="21" fill="#FFFFFF" fill-opacity="0.7" stroke="#A50034" stroke-width="1.2" stroke-dasharray="3 2" />
+                      <ellipse cx="152" cy="188" rx="42" ry="20" fill="#FFFFFF" fill-opacity="0.7" stroke="#6B7280" stroke-width="1.2" stroke-dasharray="3 2" />
+
+                      <!-- Cluster 1 (고구독·고수익: #A50034) 실제 샘플 포인트 -->
+                      <g fill="#A50034" opacity="0.85">
+                        <circle cx="413" cy="58.1" r="3" /><circle cx="423.7" cy="61.4" r="3" /><circle cx="414" cy="70.9" r="3" />
+                        <circle cx="381.8" cy="77.8" r="3" /><circle cx="419.4" cy="61.7" r="3" /><circle cx="386.1" cy="65.9" r="3" />
+                        <circle cx="387.2" cy="64.2" r="3" /><circle cx="420.5" cy="61.4" r="3" /><circle cx="436.6" cy="65.2" r="3" />
+                        <circle cx="418.4" cy="80" r="3" /><circle cx="434.5" cy="75" r="3" /><circle cx="391.5" cy="74.7" r="3" />
+                        <circle cx="365.7" cy="73.2" r="3" /><circle cx="407.6" cy="61.6" r="3" /><circle cx="402.2" cy="72.8" r="3" />
+                        <circle cx="408.7" cy="66.9" r="3" /><circle cx="440.9" cy="69.4" r="3" /><circle cx="382.9" cy="60.5" r="3" />
+                        <circle cx="408.7" cy="63.9" r="3" /><circle cx="402.2" cy="63.4" r="3" /><circle cx="419.4" cy="59.6" r="3" />
+                        <circle cx="446.3" cy="58.6" r="3" /><circle cx="400.1" cy="61.5" r="3" /><circle cx="404.4" cy="68.2" r="3" />
+                      </g>
+
+                      <!-- Cluster 2 (고구독·중수익: #111827) 실제 샘플 포인트 -->
+                      <g fill="#111827" opacity="0.82">
+                        <circle cx="391.5" cy="140.4" r="3" /><circle cx="361.4" cy="150.5" r="3" /><circle cx="377.5" cy="135.1" r="3" />
+                        <circle cx="390.4" cy="153.2" r="3" /><circle cx="390.4" cy="157" r="3" /><circle cx="378.6" cy="151.7" r="3" />
+                        <circle cx="389.3" cy="149.2" r="3" /><circle cx="384" cy="153.6" r="3" /><circle cx="370" cy="146.5" r="3" />
+                        <circle cx="346.3" cy="155.7" r="3" /><circle cx="382.9" cy="145.2" r="3" /><circle cx="375.3" cy="165.8" r="3" />
+                        <circle cx="386.1" cy="155.7" r="3" /><circle cx="364.6" cy="150" r="3" /><circle cx="359.2" cy="150.2" r="3" />
+                        <circle cx="406.5" cy="156.6" r="3" /><circle cx="372.1" cy="153.8" r="3" /><circle cx="356" cy="144.9" r="3" />
+                        <circle cx="364.6" cy="155.6" r="3" /><circle cx="394.7" cy="154.3" r="3" /><circle cx="414" cy="157.1" r="3" />
+                        <circle cx="370" cy="149.5" r="3" /><circle cx="361.4" cy="163.8" r="3" /><circle cx="387.2" cy="152.5" r="3" />
+                      </g>
+
+                      <!-- Cluster 3 (저구독·고수익: #FFFFFF fill + #A50034 stroke) 실제 샘플 포인트 -->
+                      <g fill="#FFFFFF" stroke="#A50034" stroke-width="1.6">
+                        <circle cx="252.8" cy="82.1" r="3" /><circle cx="204.4" cy="97.6" r="3" /><circle cx="221.6" cy="80.2" r="3" />
+                        <circle cx="191.5" cy="84" r="3" /><circle cx="235.6" cy="80.4" r="3" /><circle cx="234.5" cy="79.5" r="3" />
+                        <circle cx="220.6" cy="92.1" r="3" /><circle cx="186.2" cy="87.5" r="3" /><circle cx="238.8" cy="91.3" r="3" />
+                        <circle cx="222.7" cy="87.4" r="3" /><circle cx="199" cy="93.9" r="3" /><circle cx="224.8" cy="100.9" r="3" />
+                        <circle cx="247.4" cy="86.1" r="3" /><circle cx="227" cy="92.4" r="3" /><circle cx="191.5" cy="91.5" r="3" />
+                        <circle cx="231.3" cy="81.2" r="3" /><circle cx="207.6" cy="97.4" r="3" /><circle cx="182.9" cy="80.6" r="3" />
+                        <circle cx="200.1" cy="78.7" r="3" /><circle cx="216.2" cy="79.3" r="3" /><circle cx="173.2" cy="81.9" r="3" />
+                        <circle cx="192.6" cy="88.2" r="3" /><circle cx="207.6" cy="85.8" r="3" /><circle cx="235.6" cy="89.5" r="3" />
+                      </g>
+
+                      <!-- Cluster 4 (저구독·저수익: #6B7280) 실제 샘플 포인트 -->
+                      <g fill="#6B7280" opacity="0.85">
+                        <circle cx="138.9" cy="193.6" r="3" /><circle cx="162.5" cy="197.5" r="3" /><circle cx="141" cy="181.6" r="3" />
+                        <circle cx="143.1" cy="189.8" r="3" /><circle cx="118.4" cy="195.2" r="3" /><circle cx="147.5" cy="196.5" r="3" />
+                        <circle cx="146.4" cy="188.4" r="3" /><circle cx="145.3" cy="181.3" r="3" /><circle cx="177.5" cy="172.7" r="3" />
+                        <circle cx="151.8" cy="194.8" r="3" /><circle cx="152.8" cy="190.2" r="3" /><circle cx="147.5" cy="191.8" r="3" />
+                        <circle cx="129.2" cy="202.7" r="3" /><circle cx="159.3" cy="177.6" r="3" /><circle cx="171.1" cy="176.3" r="3" />
+                        <circle cx="159.3" cy="194.4" r="3" /><circle cx="148.5" cy="195.2" r="3" /><circle cx="164.6" cy="202.1" r="3" />
+                        <circle cx="166.8" cy="178" r="3" /><circle cx="148.5" cy="186" r="3" /><circle cx="142.1" cy="192" r="3" />
+                        <circle cx="169" cy="191.8" r="3" /><circle cx="171.1" cy="180.7" r="3" /><circle cx="116.3" cy="176.1" r="3" />
+                      </g>
+
+                      <!-- 전환 화살표 (C3 -> C1 구독 결합, C2 -> C1 마진 고도화) -->
+                      <line x1="258" y1="82" x2="355" y2="70" stroke="#A50034" stroke-width="1.5" stroke-dasharray="3 2" />
+                      <text x="275" y="69" font-size="8.5" font-weight="700" fill="#A50034">케어십 결합 →</text>
+                      <line x1="392" y1="129" x2="403" y2="92" stroke="#111827" stroke-width="1.5" stroke-dasharray="3 2" />
+                      <text x="406" y="114" font-size="8.5" font-weight="700" fill="#111827">↑ 원가절감·업셀링</text>
+
+                      <!-- 4개 군집 중심점(Centroid) 마커 및 라벨 -->
+                      <circle cx="407.3" cy="68.1" r="6" fill="#A50034" stroke="#FFFFFF" stroke-width="2" />
+                      <rect x="342" y="32" width="132" height="17" rx="3" fill="#111827" />
+                      <text x="408" y="43.5" text-anchor="middle" font-size="9.5" font-weight="700" fill="#FFFFFF">★ C1 중심 (42.8%, 37.4%)</text>
+
+                      <circle cx="378.4" cy="150.8" r="6" fill="#111827" stroke="#FFFFFF" stroke-width="2" />
+                      <rect x="312" y="174" width="132" height="17" rx="3" fill="#111827" />
+                      <text x="378" y="185.5" text-anchor="middle" font-size="9.5" font-weight="700" fill="#FFFFFF">★ C2 중심 (40.1%, 24.8%)</text>
+
+                      <circle cx="211.1" cy="85.5" r="6" fill="#A50034" stroke="#FFFFFF" stroke-width="2" />
+                      <rect x="145" y="48" width="132" height="17" rx="3" fill="#FFFFFF" stroke="#A50034" stroke-width="1.2" />
+                      <text x="211" y="59.5" text-anchor="middle" font-size="9.5" font-weight="800" fill="#A50034">★ C3 중심 (24.5%, 34.8%)</text>
+
+                      <circle cx="151.8" cy="188.3" r="6" fill="#6B7280" stroke="#FFFFFF" stroke-width="2" />
+                      <rect x="88" y="210" width="132" height="17" rx="3" fill="#FFFFFF" stroke="#6B7280" stroke-width="1.2" />
+                      <text x="154" y="221.5" text-anchor="middle" font-size="9.5" font-weight="700" fill="#374151">★ C4 중심 (19.0%, 19.1%)</text>
+
+                      <!-- Y축 눈금 텍스트 (영업 이익률 %) -->
+                      <text x="48" y="41" text-anchor="end" font-size="9.5" fill="#6B7280">42%</text>
+                      <text x="48" y="80" text-anchor="end" font-size="9.5" fill="#6B7280">36%</text>
+                      <text x="48" y="120" text-anchor="end" font-size="9.5" font-weight="700" fill="#A50034">30%</text>
+                      <text x="48" y="159" text-anchor="end" font-size="9.5" fill="#6B7280">24%</text>
+                      <text x="48" y="211" text-anchor="end" font-size="9.5" fill="#6B7280">16%</text>
+                      <text x="16" y="130" text-anchor="middle" font-size="10" font-weight="700" fill="#111827" transform="rotate(-90 16 130)">영업 이익률 (%)</text>
+
+                      <!-- X축 눈금 텍스트 (구독 전환율 %) -->
+                      <text x="109" y="249" text-anchor="middle" font-size="9.5" fill="#6B7280">15%</text>
+                      <text x="216" y="249" text-anchor="middle" font-size="9.5" fill="#6B7280">25%</text>
+                      <text x="291" y="249" text-anchor="middle" font-size="9.5" font-weight="700" fill="#A50034">32%</text>
+                      <text x="377" y="249" text-anchor="middle" font-size="9.5" fill="#6B7280">40%</text>
+                      <text x="431" y="249" text-anchor="middle" font-size="9.5" fill="#6B7280">45%</text>
+                      <text x="272" y="262" text-anchor="middle" font-size="10" font-weight="700" fill="#111827">구독 전환율 (Subscription Ratio %)</text>
+                    </svg>
+
+                    <div class="summary-callout" style="margin-top: 6px; padding: 7px 10px;">
+                      <p><strong>군집 분리도 검증:</strong> C1·C2(고구독군 35.3~46.7%)와 C3·C4(저구독군 14.2~28.4%) 간 경계가 뚜렷하며, 시제품(StanbyME &amp; Care 매출 0원 18건, 평균 구독률 35.8%)은 R&amp;D 예외군으로 분리 관리합니다.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 우측: K-Means 4대 군집별 영업 전략 매트릭스 -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <span class="card-tag">CLUSTER SALES STRATEGY</span>
+                      <span class="card-step">4대 군집 맞춤형 액션 플랜</span>
+                    </div>
+                    <h2 class="card-title">K-Means 군집별 포지셔닝 및 중점 영업 전략</h2>
+                    <p class="card-desc">각 군집의 중심점(구독률·이익률) 특성에 맞춰 <strong>C2·C3 그룹을 C1(스타/캐시카우)으로 이동</strong>시키는 투트랙 영업 전략을 실행합니다.</p>
+                  </div>
+
+                  <div class="strategy-grid">
+                    <!-- Cluster 1: 스타 / 캐시카우 -->
+                    <div class="strategy-card primary">
+                      <div>
+                        <div class="strategy-head">
+                          <span class="strategy-cluster-tag red">CLUSTER 1 · 스타/캐시카우</span>
+                          <span style="font-size: 10.5px; font-weight: 800; color: #A50034;">273건 (30.3%)</span>
+                        </div>
+                        <div class="strategy-title">고구독 · 고수익 핵심 수익원</div>
+                      </div>
+                      <div class="strategy-metrics">
+                        <span class="strategy-metric-pill">구독 42.8%</span>
+                        <span class="strategy-metric-pill">마진 37.4%</span>
+                        <span class="strategy-metric-pill">매출 655.9억</span>
+                      </div>
+                      <ul class="strategy-list">
+                        <li><strong>주력 분포:</strong> Whisen(60건)·WashTower(58건)·OLED(57건), APAC·북미 최다</li>
+                        <li><strong>장기 Lock-in:</strong> 5~6년 장기 계약 만기 도래 시 <strong>신모델 재구독 할인·보상교체</strong> 자동 발동</li>
+                        <li><strong>다품목 결합:</strong> ThinQ ON 허브 기반 2품목 이상 동시 구독 시 케어십 VIP 혜택 제공</li>
+                      </ul>
+                    </div>
+
+                    <!-- Cluster 2: 구독 확장형 (수익성 고도화) -->
+                    <div class="strategy-card">
+                      <div>
+                        <div class="strategy-head">
+                          <span class="strategy-cluster-tag">CLUSTER 2 · 구독 수익성 고도화</span>
+                          <span style="font-size: 10.5px; font-weight: 700; color: #111827;">242건 (26.8%)</span>
+                        </div>
+                        <div class="strategy-title">고구독 · 중수익 (마진 점프 타겟)</div>
+                      </div>
+                      <div class="strategy-metrics">
+                        <span class="strategy-metric-pill">구독 40.1%</span>
+                        <span class="strategy-metric-pill">마진 24.8%</span>
+                        <span class="strategy-metric-pill">매출 592.9억</span>
+                      </div>
+                      <ul class="strategy-list">
+                        <li><strong>현황 진단:</strong> 구독 전환율(40.1%)은 높으나 방문 케어 인건비·판촉비로 마진 24.8% 정체</li>
+                        <li><strong>AI 원격케어 전환:</strong> ThinQ 자가진단·자가세척 기능 확대로 <strong>방문 점검 횟수 최적화를 통한 원가율 -8%p 절감</strong></li>
+                        <li><strong>프리미엄 업셀링:</strong> 스탠다드 케어를 프리미엄 올인원 케어로 전환 유도 (C1 이동)</li>
+                      </ul>
+                    </div>
+
+                    <!-- Cluster 3: 프리미엄 일시불 (구독 전환 타겟) -->
+                    <div class="strategy-card">
+                      <div>
+                        <div class="strategy-head">
+                          <span class="strategy-cluster-tag" style="border-color: #A50034; color: #A50034;">CLUSTER 3 · 구독 전환 타겟</span>
+                          <span style="font-size: 10.5px; font-weight: 700; color: #A50034;">226건 (25.1%)</span>
+                        </div>
+                        <div class="strategy-title">저구독 · 고수익 (프리미엄 일시불)</div>
+                      </div>
+                      <div class="strategy-metrics">
+                        <span class="strategy-metric-pill">구독 24.5%</span>
+                        <span class="strategy-metric-pill">마진 34.8%</span>
+                        <span class="strategy-metric-pill">매출 561.8억</span>
+                      </div>
+                      <ul class="strategy-list">
+                        <li><strong>현황 진단:</strong> 유럽·한국 등 하이엔드 단품 일시불 선호층 (마진 34.8% 우수, 구독 24.5% 저조)</li>
+                        <li><strong>언번들 케어십 결합:</strong> 일시불 구매 후에도 가입 가능한 <strong>'사후 AI 케어십·소모품 정기구독'</strong> 분리형 상품 출시</li>
+                        <li><strong>전환 프로모션:</strong> 일시불 결제 단계에서 36개월 무이자급 구독 전환 시 첫 3개월 케어 무료</li>
+                      </ul>
+                    </div>
+
+                    <!-- Cluster 4: 포트폴리오 리빌딩 -->
+                    <div class="strategy-card">
+                      <div>
+                        <div class="strategy-head">
+                          <span class="strategy-cluster-tag" style="color: #6B7280;">CLUSTER 4 · 포트폴리오 리빌딩</span>
+                          <span style="font-size: 10.5px; font-weight: 700; color: #6B7280;">161건 (17.8%)</span>
+                        </div>
+                        <div class="strategy-title">저구독 · 저수익 (보급형 구조조정)</div>
+                      </div>
+                      <div class="strategy-metrics">
+                        <span class="strategy-metric-pill">구독 19.0%</span>
+                        <span class="strategy-metric-pill">마진 19.1%</span>
+                        <span class="strategy-metric-pill">매출 389.8억</span>
+                      </div>
+                      <ul class="strategy-list">
+                        <li><strong>현황 진단:</strong> 가격 민감도가 높은 보급형 단품 구간 (평균 마진 19.1%로 전사 수익성 희석)</li>
+                        <li><strong>진입형 라이트 구독:</strong> 월 부담을 낮춘 <strong>3년 단기·셀프케어형 라이트 구독</strong>으로 초기 진입장벽 해소</li>
+                        <li><strong>채널 효율화:</strong> 오프라인 저마진 SKU를 축소하고 LGE.COM 온라인 D2C 전용 모델로 전환</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: 04_AG_Analytics_lg_appliance_data.csv (정상 매출 902건 K-Means K=4 군집화 · 시제품 18건 별도)</span>
+              <span class="slide-page-indicator"><span>08</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- =================================================================
+               SLIDE 09: 의사결정트리(Decision Tree) 고수익 분기 갈림길 도표 & 등급카드
+               ================================================================= -->
+          <section class="slide" data-slide="8" data-title="09. 의사결정트리(Decision Tree) 고수익 분기 갈림길 도표 및 등급카드">
+            <header class="slide-header">
+              <div class="slide-title-group">
+                <span class="slide-eyebrow">09 · CART DECISION TREE &amp; PROFITABILITY GRADE CARDS</span>
+                <h1 class="slide-title">고수익(마진 ≥ 30%) 상품 조건 의사결정트리 갈림길 도표 및 S~C 등급카드</h1>
+              </div>
+              <div class="lg-brand-badge">
+                <span class="lg-dot"></span>
+                <span>CART GINI SPLIT · DEPTH = 2</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="grid-2" style="grid-template-columns: 1.04fr 0.96fr;">
+                <!-- 좌측: 의사결정트리 갈림길 도표 (Decision Tree Branching Diagram) -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <span class="card-tag">DECISION TREE BRANCHING DIAGRAM</span>
+                      <span class="card-step">타겟: 영업이익률 ≥ 30% (고수익 상품)</span>
+                    </div>
+                    <h2 class="card-title">고수익 진입 조건 의사결정트리(CART) 핵심 갈림길 도표</h2>
+                    <p class="card-desc">지니 불순도(Gini Impurity) 감소량이 가장 큰 <strong>1차 갈림길은 ‘ThinQ 만족도 90.0점’</strong>이며, 이어지는 <strong>2차 갈림길 ‘구독 전환율(35% / 23%)’</strong>에 따라 4개 등급(S~C)으로 완벽히 분기됩니다.</p>
+                  </div>
+
+                  <div class="dtree-canvas">
+                    <svg viewBox="0 0 530 278" style="width: 100%; height: 100%; max-height: 262px; display: block;">
+                      <!-- 연결 분기선 (Root -> Level 1) -->
+                      <path d="M 265 56 L 265 72 L 138 72 L 138 92" fill="none" stroke="#A50034" stroke-width="2" />
+                      <path d="M 265 56 L 265 72 L 392 72 L 392 92" fill="none" stroke="#6B7280" stroke-width="1.8" stroke-dasharray="4 2" />
+
+                      <!-- YES / NO 분기 배지 (Level 1) -->
+                      <rect x="166" y="63" width="66" height="17" rx="8" fill="#A50034" />
+                      <text x="199" y="74.5" text-anchor="middle" font-size="9" font-weight="800" fill="#FFFFFF">YES (≥ 90점)</text>
+                      <rect x="298" y="63" width="66" height="17" rx="8" fill="#374151" />
+                      <text x="331" y="74.5" text-anchor="middle" font-size="9" font-weight="700" fill="#FFFFFF">NO (&lt; 90점)</text>
+
+                      <!-- 연결 분기선 (Level 1 Left -> Leaf S, Leaf A) -->
+                      <path d="M 138 148 L 138 168 L 72 168 L 72 190" fill="none" stroke="#A50034" stroke-width="2" />
+                      <path d="M 138 148 L 138 168 L 202 168 L 202 190" fill="none" stroke="#111827" stroke-width="1.8" />
+
+                      <!-- YES / NO 분기 배지 (Level 2 Left) -->
+                      <rect x="75" y="159" width="52" height="15" rx="4" fill="#A50034" />
+                      <text x="101" y="169.5" text-anchor="middle" font-size="8.5" font-weight="800" fill="#FFFFFF">YES ≥35%</text>
+                      <rect x="149" y="159" width="52" height="15" rx="4" fill="#111827" />
+                      <text x="175" y="169.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#FFFFFF">NO &lt;35%</text>
+
+                      <!-- 연결 분기선 (Level 1 Right -> Leaf B, Leaf C) -->
+                      <path d="M 392 148 L 392 168 L 328 168 L 328 190" fill="none" stroke="#374151" stroke-width="1.6" />
+                      <path d="M 392 148 L 392 168 L 458 168 L 458 190" fill="none" stroke="#6B7280" stroke-width="1.5" stroke-dasharray="3 2" />
+
+                      <!-- YES / NO 분기 배지 (Level 2 Right) -->
+                      <rect x="331" y="159" width="52" height="15" rx="4" fill="#374151" />
+                      <text x="357" y="169.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#FFFFFF">YES ≥23%</text>
+                      <rect x="405" y="159" width="52" height="15" rx="4" fill="#6B7280" />
+                      <text x="431" y="169.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#FFFFFF">NO &lt;23%</text>
+
+                      <!-- ================= ROOT NODE ================= -->
+                      <rect x="145" y="6" width="240" height="50" rx="6" fill="#FFFFFF" stroke="#A50034" stroke-width="2" />
+                      <rect x="145" y="6" width="240" height="16" rx="5" fill="#A50034" />
+                      <text x="265" y="17" text-anchor="middle" font-size="9.5" font-weight="800" fill="#FFFFFF">ROOT · 1차 핵심 갈림길: ThinQ AI 만족도 ≥ 90.0점?</text>
+                      <text x="265" y="34" text-anchor="middle" font-size="10.5" font-weight="800" fill="#111827">전체 분석 대상 N = 902건 (평균 이익률 30.12%)</text>
+                      <text x="265" y="48" text-anchor="middle" font-size="9.5" font-weight="600" fill="#374151">고수익(마진 ≥ 30%) 상품: 499건 (55.3%) vs 일반: 403건</text>
+
+                      <!-- ================= LEVEL 1 LEFT NODE (Sat >= 90) ================= -->
+                      <rect x="36" y="92" width="204" height="56" rx="6" fill="#FFFFFF" stroke="#A50034" stroke-width="1.8" />
+                      <rect x="36" y="92" width="204" height="16" rx="5" fill="#F8F9FA" />
+                      <text x="138" y="103" text-anchor="middle" font-size="9.5" font-weight="800" fill="#A50034">2차 좌측 갈림길: 구독 전환율 ≥ 35.0%?</text>
+                      <text x="138" y="121" text-anchor="middle" font-size="10.5" font-weight="800" fill="#111827">고만족군 N = 475건 · 고수익 확률 100.0%</text>
+                      <text x="138" y="137" text-anchor="middle" font-size="9.5" font-weight="600" fill="#374151">평균 이익률 36.32% (475건 전수 마진 ≥ 32%)</text>
+
+                      <!-- ================= LEVEL 1 RIGHT NODE (Sat < 90) ================= -->
+                      <rect x="290" y="92" width="204" height="56" rx="6" fill="#FFFFFF" stroke="#6B7280" stroke-width="1.5" />
+                      <rect x="290" y="92" width="204" height="16" rx="5" fill="#F8F9FA" />
+                      <text x="392" y="103" text-anchor="middle" font-size="9.5" font-weight="800" fill="#374151">2차 우측 갈림길: 구독 전환율 ≥ 23.0%?</text>
+                      <text x="392" y="121" text-anchor="middle" font-size="10.5" font-weight="800" fill="#111827">저·중만족군 N = 427건 · 고수익 확률 5.6%</text>
+                      <text x="392" y="137" text-anchor="middle" font-size="9.5" font-weight="600" fill="#6B7280">평균 이익률 23.22% (고수익 24건 / 저수익 403건)</text>
+
+                      <!-- ================= LEAF 1: S등급 ================= -->
+                      <rect x="12" y="190" width="120" height="80" rx="6" fill="#FFFFFF" stroke="#A50034" stroke-width="2" />
+                      <rect x="12" y="190" width="120" height="19" rx="4" fill="#A50034" />
+                      <text x="72" y="203" text-anchor="middle" font-size="10" font-weight="800" fill="#FFFFFF">S등급 · 초고수익 스타</text>
+                      <text x="72" y="222" text-anchor="middle" font-size="11" font-weight="800" fill="#A50034">평균 마진 37.44%</text>
+                      <text x="72" y="237" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">고수익 확률 100% (273건)</text>
+                      <text x="72" y="252" text-anchor="middle" font-size="9" fill="#374151">구독 42.8% · 만족도 98.2점</text>
+                      <text x="72" y="264" text-anchor="middle" font-size="8.5" font-weight="700" fill="#6B7280">매출 655.9억 원 (30.3%)</text>
+
+                      <!-- ================= LEAF 2: A등급 ================= -->
+                      <rect x="142" y="190" width="120" height="80" rx="6" fill="#FFFFFF" stroke="#111827" stroke-width="1.8" />
+                      <rect x="142" y="190" width="120" height="19" rx="4" fill="#111827" />
+                      <text x="202" y="203" text-anchor="middle" font-size="10" font-weight="800" fill="#FFFFFF">A등급 · 안정 고수익</text>
+                      <text x="202" y="222" text-anchor="middle" font-size="11" font-weight="800" fill="#111827">평균 마진 34.80%</text>
+                      <text x="202" y="237" text-anchor="middle" font-size="9.5" font-weight="700" fill="#111827">고수익 확률 100% (202건)</text>
+                      <text x="202" y="252" text-anchor="middle" font-size="9" fill="#374151">구독 24.4% · 만족도 92.4점</text>
+                      <text x="202" y="264" text-anchor="middle" font-size="8.5" font-weight="700" fill="#6B7280">매출 482.7억 원 (22.4%)</text>
+
+                      <!-- ================= LEAF 3: B등급 ================= -->
+                      <rect x="270" y="190" width="118" height="80" rx="6" fill="#F8F9FA" stroke="#374151" stroke-width="1.4" />
+                      <rect x="270" y="190" width="118" height="19" rx="4" fill="#374151" />
+                      <text x="329" y="203" text-anchor="middle" font-size="10" font-weight="800" fill="#FFFFFF">B등급 · 중수익 육성군</text>
+                      <text x="329" y="222" text-anchor="middle" font-size="11" font-weight="800" fill="#374151">평균 마진 25.68%</text>
+                      <text x="329" y="237" text-anchor="middle" font-size="9.5" font-weight="700" fill="#374151">고수익 확률 9.0% (268건)</text>
+                      <text x="329" y="252" text-anchor="middle" font-size="9" fill="#374151">구독 38.7% · 만족도 87.5점</text>
+                      <text x="329" y="264" text-anchor="middle" font-size="8.5" font-weight="700" fill="#6B7280">매출 680.2억 원 (29.7%)</text>
+
+                      <!-- ================= LEAF 4: C등급 ================= -->
+                      <rect x="398" y="190" width="120" height="80" rx="6" fill="#F8F9FA" stroke="#E5E7EB" stroke-width="1.4" />
+                      <rect x="398" y="190" width="120" height="19" rx="4" fill="#6B7280" />
+                      <text x="458" y="203" text-anchor="middle" font-size="10" font-weight="800" fill="#FFFFFF">C등급 · 저수익 개선군</text>
+                      <text x="458" y="222" text-anchor="middle" font-size="11" font-weight="800" fill="#6B7280">평균 마진 19.09%</text>
+                      <text x="458" y="237" text-anchor="middle" font-size="9.5" font-weight="700" fill="#6B7280">고수익 확률 0.0% (159건)</text>
+                      <text x="458" y="252" text-anchor="middle" font-size="9" fill="#6B7280">구독 19.0% · 만족도 76.2점</text>
+                      <text x="458" y="264" text-anchor="middle" font-size="8.5" font-weight="700" fill="#6B7280">매출 381.5억 원 (17.6%)</text>
+                    </svg>
+
+                    <div class="summary-callout" style="margin-top: 6px; padding: 7px 10px;">
+                      <p><strong>의사결정트리 골든 룰(Golden Rule):</strong> 고수익(마진 ≥ 30%) 달성의 절대 관문은 <strong>ThinQ 만족도 90.0점 이상(고수익 적중률 100%)</strong>이며, 여기에 <strong>구독 전환율 35% 이상</strong>이 결합될 때 평균 마진 <strong>37.44%의 S등급</strong>으로 격상됩니다.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 우측: S / A / B / C 4대 수익성 등급카드 (Grade Cards) -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <span class="card-tag">PROFITABILITY GRADE CARDS</span>
+                      <span class="card-step">의사결정트리 리프 노드 기준 S~C 등급표</span>
+                    </div>
+                    <h2 class="card-title">고수익 결정 조건별 제품 등급카드 및 승급 로드맵</h2>
+                    <p class="card-desc">의사결정트리의 최종 리프 노드(Leaf Node) 4개를 표준 등급카드로 정의하여 상품 기획 및 영업 현장의 KPI 기준으로 활용합니다.</p>
+                  </div>
+
+                  <div class="grade-card-grid">
+                    <!-- S등급 카드 -->
+                    <div class="grade-card tier-s">
+                      <div class="grade-top">
+                        <div class="grade-badge-wrap">
+                          <div class="grade-medal s">S</div>
+                          <div class="grade-name-group">
+                            <h3>초고수익 플래그십</h3>
+                            <span>273건 (30.3%) · 매출 655.9억</span>
+                          </div>
+                        </div>
+                        <span class="grade-prob-pill high">고수익 100%</span>
+                      </div>
+                      <div class="grade-rule-box">조건: ThinQ 만족도 ≥ 90점 AND 구독률 ≥ 35%</div>
+                      <div class="grade-kpi-row">
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 이익률</span>
+                          <span class="val red">37.44%</span>
+                        </div>
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 구독률</span>
+                          <span class="val">42.78%</span>
+                        </div>
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 만족도</span>
+                          <span class="val">98.24점</span>
+                        </div>
+                      </div>
+                      <p class="grade-desc"><strong>유지 전략:</strong> AI 홈 허브(ThinQ ON) 무상 업그레이드 및 만기 재구독 보상교체로 이탈률 0% 방어</p>
+                    </div>
+
+                    <!-- A등급 카드 -->
+                    <div class="grade-card tier-a">
+                      <div class="grade-top">
+                        <div class="grade-badge-wrap">
+                          <div class="grade-medal a">A</div>
+                          <div class="grade-name-group">
+                            <h3>안정 고수익 프리미엄</h3>
+                            <span>202건 (22.4%) · 매출 482.7억</span>
+                          </div>
+                        </div>
+                        <span class="grade-prob-pill high">고수익 100%</span>
+                      </div>
+                      <div class="grade-rule-box">조건: ThinQ 만족도 ≥ 90점 AND 구독률 &lt; 35%</div>
+                      <div class="grade-kpi-row">
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 이익률</span>
+                          <span class="val">34.80%</span>
+                        </div>
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 구독률</span>
+                          <span class="val">24.38%</span>
+                        </div>
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 만족도</span>
+                          <span class="val">92.40점</span>
+                        </div>
+                      </div>
+                      <p class="grade-desc"><strong>S등급 승급 조건:</strong> 일시불 구매자 대상 ‘사후 케어십 구독’ 결합으로 구독률 <strong>+10.6%p</strong> 상향 시 S등급 승급</p>
+                    </div>
+
+                    <!-- B등급 카드 -->
+                    <div class="grade-card">
+                      <div class="grade-top">
+                        <div class="grade-badge-wrap">
+                          <div class="grade-medal b">B</div>
+                          <div class="grade-name-group">
+                            <h3>중수익 구독 육성군</h3>
+                            <span>268건 (29.7%) · 매출 680.2억</span>
+                          </div>
+                        </div>
+                        <span class="grade-prob-pill">고수익 9.0%</span>
+                      </div>
+                      <div class="grade-rule-box">조건: ThinQ 만족도 &lt; 90점 AND 구독률 ≥ 23%</div>
+                      <div class="grade-kpi-row">
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 이익률</span>
+                          <span class="val">25.68%</span>
+                        </div>
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 구독률</span>
+                          <span class="val">38.67%</span>
+                        </div>
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 만족도</span>
+                          <span class="val">87.47점</span>
+                        </div>
+                      </div>
+                      <p class="grade-desc"><strong>S등급 직행 조건:</strong> 구독률(38.7%)은 이미 S등급 기준을 충족하므로 <strong>ThinQ 만족도 +2.5점 개선 시 S등급 직행</strong></p>
+                    </div>
+
+                    <!-- C등급 카드 -->
+                    <div class="grade-card">
+                      <div class="grade-top">
+                        <div class="grade-badge-wrap">
+                          <div class="grade-medal c">C</div>
+                          <div class="grade-name-group">
+                            <h3>저수익 구조개선군</h3>
+                            <span>159건 (17.6%) · 매출 381.5억</span>
+                          </div>
+                        </div>
+                        <span class="grade-prob-pill" style="color: #6B7280;">고수익 0.0%</span>
+                      </div>
+                      <div class="grade-rule-box">조건: ThinQ 만족도 &lt; 90점 AND 구독률 &lt; 23%</div>
+                      <div class="grade-kpi-row">
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 이익률</span>
+                          <span class="val" style="color: #6B7280;">19.09%</span>
+                        </div>
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 구독률</span>
+                          <span class="val" style="color: #6B7280;">18.96%</span>
+                        </div>
+                        <div class="grade-kpi-cell">
+                          <span class="lbl">평균 만족도</span>
+                          <span class="val" style="color: #6B7280;">76.16점</span>
+                        </div>
+                      </div>
+                      <p class="grade-desc"><strong>구조개선 전략:</strong> 3년 라이트 구독 도입으로 B등급 우선 진입 유도 및 저마진 단품 온라인 D2C 전환 *(+시제품 18건 별도)*</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: 04_AG_Analytics_lg_appliance_data.csv (정상 매출 902건 CART 의사결정트리 분기 분석 · 타겟: 영업마진 ≥ 30%)</span>
+              <span class="slide-page-indicator"><span>09</span> / 10</span>
+            </footer>
+          </section>
+
+          <!-- =================================================================
+               SLIDE 10: 시계열 회귀 예측 (4분기 예상 매출 추세선 & 변수별 영향도 순위)
+               ================================================================= -->
+          <section class="slide" data-slide="9" data-title="10. 시계열 회귀 예측 (4분기 예상 매출 추세선 및 변수별 영향도 순위)">
+            <header class="slide-header">
+              <div class="slide-title-group">
+                <span class="slide-eyebrow">10 · TIME-SERIES REGRESSION FORECAST &amp; FEATURE IMPACT RANKING</span>
+                <h1 class="slide-title">1~9월 실적 기반 4분기(10~12월) 매출 시계열 회귀 예측 및 변수별 영향도 순위</h1>
+              </div>
+              <div class="lg-brand-badge">
+                <span class="lg-dot"></span>
+                <span>TIME-SERIES OLS · R² = 96.9%</span>
+              </div>
+            </header>
+
+            <div class="slide-body">
+              <div class="grid-2" style="grid-template-columns: 1.06fr 0.94fr;">
+                <!-- 좌측: 1~9월 실적 및 4분기(10~12월) 예상 매출 추세선 차트 -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <span class="card-tag">Q4 REVENUE TREND FORECAST</span>
+                      <span class="card-step">1~9월 실적(2,200.4억) → 4분기 예측(1,641.6억)</span>
+                    </div>
+                    <h2 class="card-title">2026년 1~9월 월별 매출 실적 및 4분기(10~12월) 시계열 회귀 추세선</h2>
+                    <p class="card-desc">1~9월 월별 매출의 시계열 선형 회귀 분석 결과 월평균 <strong>+50.45억 원 순증 추세(R² = 0.9686)</strong>가 확인되었으며, 4분기 예상 매출은 <strong>1,641.6억 원(QoQ +37.0%)</strong>에 달할 전망입니다.</p>
+                  </div>
+
+                  <!-- 상단 3대 요약 KPI -->
+                  <div class="grid-3" style="gap: 8px;">
+                    <div class="kpi-box" style="padding: 8px 10px;">
+                      <span class="kpi-label">1~3분기 누적 실적 (1~9월)</span>
+                      <div class="kpi-value" style="font-size: 18px;">2,200.4<span class="unit">억</span></div>
+                      <span class="kpi-delta">Q1 285억 → Q2 718억 → Q3 1,198억</span>
+                    </div>
+                    <div class="kpi-box" style="padding: 8px 10px;">
+                      <span class="kpi-label">4분기 예상 매출 (10~12월)</span>
+                      <div class="kpi-value" style="font-size: 18px; color: #A50034;">1,641.6<span class="unit">억</span></div>
+                      <span class="kpi-delta">3분기 대비 +37.0% (+443.4억 ↑)</span>
+                    </div>
+                    <div class="kpi-box" style="padding: 8px 10px;">
+                      <span class="kpi-label">2026 연간 총 매출 전망</span>
+                      <div class="kpi-value" style="font-size: 18px;">3,841.9<span class="unit">억</span></div>
+                      <span class="kpi-delta">월평균 +50.45억 성장 (R²=96.9%)</span>
+                    </div>
+                  </div>
+
+                  <!-- 시계열 회귀 추세선 SVG 차트 -->
+                  <div class="ts-chart-box">
+                    <div class="formula-box" style="margin-bottom: 4px; padding: 5px 10px;">
+                      <span><strong>시계열 회귀 추세식:</strong> Ŷ(월매출) = -7.76 + 50.45 × Month(월)</span>
+                      <span class="r2">R² = 0.9686 (96.9%)</span>
+                    </div>
+
+                    <svg viewBox="0 0 520 236" style="width: 100%; height: 100%; max-height: 210px; display: block;">
+                      <!-- 차트 배경 및 4분기 예측 강조 영역 -->
+                      <rect x="48" y="18" width="335" height="194" fill="#FFFFFF" stroke="#E5E7EB" stroke-width="1" />
+                      <rect x="383" y="18" width="120" height="194" fill="#F8F9FA" stroke="#A50034" stroke-width="1.2" stroke-dasharray="3 2" />
+                      <text x="443" y="31" text-anchor="middle" font-size="9" font-weight="800" fill="#A50034">Q4 회귀 예측 구간 (10~12월)</text>
+
+                      <!-- 가로 그리드 라인 (0억, 150억, 300억, 450억, 600억) -->
+                      <line x1="48" y1="212" x2="503" y2="212" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="48" y1="170" x2="503" y2="170" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="48" y1="128" x2="503" y2="128" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="48" y1="86" x2="503" y2="86" stroke="#E5E7EB" stroke-width="1" />
+                      <line x1="48" y1="44" x2="503" y2="44" stroke="#E5E7EB" stroke-width="1" />
+
+                      <!-- Y축 라벨 -->
+                      <text x="43" y="215" text-anchor="end" font-size="9" fill="#6B7280">0억</text>
+                      <text x="43" y="173" text-anchor="end" font-size="9" fill="#6B7280">150억</text>
+                      <text x="43" y="131" text-anchor="end" font-size="9" fill="#6B7280">300억</text>
+                      <text x="43" y="89" text-anchor="end" font-size="9" fill="#6B7280">450억</text>
+                      <text x="43" y="47" text-anchor="end" font-size="9" fill="#6B7280">600억</text>
+
+                      <!-- 4분기 95% 예측 신뢰구간 밴드 (폴리곤) -->
+                      <polygon points="367,84.7 406,64.5 445,49.0 484,33.5 484,55.9 445,68.6 406,81.3 367,84.7" fill="#E5E7EB" opacity="0.65" />
+
+                      <!-- 전체 1~12월 OLS 선형 회귀 추세선 (점선 가이드) -->
+                      <line x1="55" y1="200.0" x2="484" y2="44.7" stroke="#6B7280" stroke-width="1.3" stroke-dasharray="4 3" />
+
+                      <!-- 1~9월 실제 매출 실선 (Dark Charcoal #111827) -->
+                      <polyline fill="none" stroke="#111827" stroke-width="2.4" points="55,193.0 94,186.8 133,176.5 172,164.1 211,133.2 250,137.7 289,121.8 328,94.0 367,84.7" />
+
+                      <!-- 9월 -> 10~12월 회귀 예측 추세선 (LG Red #A50034 굵은 점선) -->
+                      <polyline fill="none" stroke="#A50034" stroke-width="2.6" stroke-dasharray="5 3" points="367,84.7 406,72.9 445,58.8 484,44.7" />
+
+                      <!-- 1~9월 실적 포인트 및 수치 라벨 -->
+                      <g fill="#111827">
+                        <circle cx="55" cy="193.0" r="3.5" /><text x="55" y="186" text-anchor="middle" font-size="8.5" font-weight="700">68억</text>
+                        <circle cx="94" cy="186.8" r="3.5" /><text x="94" y="180" text-anchor="middle" font-size="8.5" font-weight="700">90억</text>
+                        <circle cx="133" cy="176.5" r="3.5" /><text x="133" y="169" text-anchor="middle" font-size="8.5" font-weight="700">127억</text>
+                        <circle cx="172" cy="164.1" r="3.5" /><text x="172" y="157" text-anchor="middle" font-size="8.5" font-weight="700">171억</text>
+                        <circle cx="211" cy="133.2" r="3.5" /><text x="211" y="125" text-anchor="middle" font-size="8.5" font-weight="700">281억</text>
+                        <circle cx="250" cy="137.7" r="3.5" /><text x="250" y="150" text-anchor="middle" font-size="8.5" font-weight="700">265억</text>
+                        <circle cx="289" cy="121.8" r="3.5" /><text x="289" y="114" text-anchor="middle" font-size="8.5" font-weight="700">322억</text>
+                        <circle cx="328" cy="94.0" r="3.5" /><text x="328" y="86" text-anchor="middle" font-size="8.5" font-weight="700">421억</text>
+                        <circle cx="367" cy="84.7" r="4" /><text x="363" y="76" text-anchor="middle" font-size="9" font-weight="800">455억</text>
+                      </g>
+
+                      <!-- 10~12월 예측 포인트 및 수치 라벨 (LG Red) -->
+                      <g>
+                        <circle cx="406" cy="72.9" r="4.5" fill="#FFFFFF" stroke="#A50034" stroke-width="2.2" />
+                        <text x="406" y="63" text-anchor="middle" font-size="9" font-weight="800" fill="#A50034">497억</text>
+                        <circle cx="445" cy="58.8" r="4.5" fill="#FFFFFF" stroke="#A50034" stroke-width="2.2" />
+                        <text x="445" y="49" text-anchor="middle" font-size="9" font-weight="800" fill="#A50034">547억</text>
+                        <circle cx="484" cy="44.7" r="5" fill="#A50034" stroke="#FFFFFF" stroke-width="1.5" />
+                        <text x="480" y="35" text-anchor="middle" font-size="9.5" font-weight="800" fill="#A50034">598억</text>
+                      </g>
+
+                      <!-- X축 월별 라벨 (1월 ~ 12월) -->
+                      <text x="55" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">1월</text>
+                      <text x="94" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">2월</text>
+                      <text x="133" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">3월</text>
+                      <text x="172" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">4월</text>
+                      <text x="211" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">5월</text>
+                      <text x="250" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">6월</text>
+                      <text x="289" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">7월</text>
+                      <text x="328" y="226" text-anchor="middle" font-size="9" font-weight="600" fill="#374151">8월</text>
+                      <text x="367" y="226" text-anchor="middle" font-size="9" font-weight="700" fill="#111827">9월</text>
+                      <text x="406" y="226" text-anchor="middle" font-size="9" font-weight="800" fill="#A50034">10월(E)</text>
+                      <text x="445" y="226" text-anchor="middle" font-size="9" font-weight="800" fill="#A50034">11월(E)</text>
+                      <text x="484" y="226" text-anchor="middle" font-size="9" font-weight="800" fill="#A50034">12월(E)</text>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- 우측: 변수별 매출·이익 영향도 순위 막대 차트 (Feature Importance Ranking) -->
+                <div class="card">
+                  <div>
+                    <div class="card-header">
+                      <span class="card-tag">FEATURE IMPACT RANKING</span>
+                      <span class="card-step">표준화 다중회귀 계수(|β|) 기여도 순위</span>
+                    </div>
+                    <h2 class="card-title">매출 및 이익 성장 결정 변수별 영향도 순위 막대 차트</h2>
+                    <p class="card-desc">다중회귀 모델의 표준화 회귀계수(|β|)와 상관계수(r)를 기반으로 산출한 <strong>5대 핵심 변수의 상대 영향도(%) 순위</strong>입니다.</p>
+                  </div>
+
+                  <div class="impact-rank-list">
+                    <!-- 1위: 판매수량 및 시계열 수요 확장 -->
+                    <div class="impact-rank-item top-rank">
+                      <div class="impact-rank-head">
+                        <div class="impact-rank-title">
+                          <span class="rank-num-badge red">1위</span>
+                          <span>판매수량 및 시계열 성수기 추세 (Units &amp; Time Trend)</span>
+                        </div>
+                        <span class="impact-rank-meta">r = 0.818 · <strong>영향도 52.4%</strong></span>
+                      </div>
+                      <div class="bar-track" style="height: 17px;">
+                        <div class="bar-fill" style="width: 92%; height: 100%; font-size: 10.5px;">표준화 β = 0.791 · 월평균 판매량 +1,885대 증가가 외형 성장 주도 (52.4%)</div>
+                      </div>
+                    </div>
+
+                    <!-- 2위: 제품군 프리미엄 단가 (Product Line ASP) -->
+                    <div class="impact-rank-item top-rank">
+                      <div class="impact-rank-head">
+                        <div class="impact-rank-title">
+                          <span class="rank-num-badge red">2위</span>
+                          <span>제품군 프리미엄 단가 믹스 (Product Line ASP)</span>
+                        </div>
+                        <span class="impact-rank-meta">r = 0.520 · <strong>영향도 34.4%</strong></span>
+                      </div>
+                      <div class="bar-track" style="height: 17px;">
+                        <div class="bar-fill dark" style="width: 68%; height: 100%; font-size: 10.5px;">표준화 β = 0.520 · Whisen(350만원)·OLED(280만원) 고단가 비중 효과 (34.4%)</div>
+                      </div>
+                    </div>
+
+                    <!-- 3위: ThinQ AI 만족도 점수 (ThinQ Satisfaction) -->
+                    <div class="impact-rank-item">
+                      <div class="impact-rank-head">
+                        <div class="impact-rank-title">
+                          <span class="rank-num-badge">3위</span>
+                          <span>ThinQ AI 고객 만족도 (Satisfaction → 고마진·재구매)</span>
+                        </div>
+                        <span class="impact-rank-meta">마진 r = 0.963 · <strong>영향도 6.8%</strong></span>
+                      </div>
+                      <div class="bar-track" style="height: 16px;">
+                        <div class="bar-fill dark" style="width: 34%; height: 100%; font-size: 10px;">90점 이상 시 고수익(≥30%) 100% 달성 · 실질 영업이익 기여 (6.8%)</div>
+                      </div>
+                    </div>
+
+                    <!-- 4위: 가전 구독 전환율 (Subscription Ratio) -->
+                    <div class="impact-rank-item">
+                      <div class="impact-rank-head">
+                        <div class="impact-rank-title">
+                          <span class="rank-num-badge">4위</span>
+                          <span>가전 구독 전환율 (Subscription Ratio → 장기 LTV)</span>
+                        </div>
+                        <span class="impact-rank-meta">케어십 결합 · <strong>영향도 4.5%</strong></span>
+                      </div>
+                      <div class="bar-track" style="height: 16px;">
+                        <div class="bar-fill muted" style="width: 26%; height: 100%; font-size: 10px;">구독 35% 이상 시 케어십 결합으로 건당 LTV 및 마진율 동반 상승 (4.5%)</div>
+                      </div>
+                    </div>
+
+                    <!-- 5위: 글로벌 권역 믹스 (Region Mix) -->
+                    <div class="impact-rank-item">
+                      <div class="impact-rank-head">
+                        <div class="impact-rank-title">
+                          <span class="rank-num-badge">5위</span>
+                          <span>글로벌 권역 믹스 (APAC·북미 고성장 권역 비중)</span>
+                        </div>
+                        <span class="impact-rank-meta">매출비중 53.3% · <strong>영향도 1.9%</strong></span>
+                      </div>
+                      <div class="bar-track" style="height: 16px;">
+                        <div class="bar-fill muted" style="width: 19%; height: 100%; font-size: 10px;">인도·아시아(592억) 및 북미(581억) 성수기 물량·환율 효과 (1.9%)</div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- 하단 4분기 달성 전략 요약 -->
+                  <div class="summary-callout" style="margin-top: auto; padding: 8px 11px;">
+                    <p><strong>4분기(1,641.6억) 목표 초과달성 공식:</strong> 영향도 1위인 <strong>연말 성수기 판매 볼륨(52.4%)</strong>과 2위인 <strong>고단가 프리미엄 가전(Whisen·OLED·WashTower, 34.4%)</strong>에 영업력을 집중해 총 <strong>86.8%의 외형 성장 동력</strong>을 확보하고, 3·4위 변수(ThinQ 만족도 ≥90점 + 구독 ≥35%) 결합으로 영업이익률을 극대화합니다.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer class="slide-footer">
+              <span>출처: 04_AG_Analytics_lg_appliance_data.csv (1~9월 920건 시계열 OLS 회귀 예측 · 다중회귀 표준화 계수 분석)</span>
+              <span class="slide-page-indicator"><span>10</span> / 10</span>
+            </footer>
+          </section>
+
+        </main>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Embedded JSON payload collected via python-api-lge-trend (fetch_lg_live_market.py)
+    const LGE_LIVE_MARKET_DATA = {
+      stock_name: "LG전자",
+      stock_code: "066570",
+      close_price: "135,900",
+      fluctuation_rate: "-1.95",
+      usd_krw: 1358.73,
+      usd_eur: 0.89566,
+      latest_news: [
+        {
+          title: "[기업家] LG전자 ⑰ㅣ 가전 넘어 AI·전장·로봇으로…미래 성장동력 가속화 - CBC뉴스",
+          pubDate: "Sun, 08 Nov 2026 15:00:00 GMT",
+          link: "https://news.google.com/rss/articles/CBMiaEFVX3lxTE52VmNKQ0otYXRnbV9JQVluMVAxYzdmV1c5WDJfUi1WWFRBUVFLME1GWHJqay1HTFJ5am9vN2dCQUltTmU2cTZIaVh0UlpNRFRiRFI4NFpTVXNtZTRHTk95UUszc216cjND?oc=5"
+        },
+        {
+          title: "[LG전자]스펙 대신 ‘마음의 여유’를 팔다… 2026 라이프스 굿 캠페인과 가전 팅글 - AIMKT",
+          pubDate: "Sun, 08 Nov 2026 09:04:55 GMT",
+          link: "https://news.google.com/rss/articles/CBMiqwJBVV95cUxNUmE3NzYtMGJNV3dWNmpsclNYZ3R6bm91bjRvcEpFc1MycEhQTl9FOWpJVU1ERlFTeGluNjRQRUNDRjJVYnNIR3F6SVhxcGtBekQ0UEI2QzBNTHViam93a1RtRmd5YVdGd3ZSN24tN1hjeGFlNFFKbzg2WHY3NVVzb3pmM3ZrQlRPengwbkJ4VzBfU2JiU1YtMzBCZXRSVzF2M2dybUF3SGlxVFVvQlM1SmNLRnRGLWFaOGJTa0dLS3VWRVZocVdwY29STkRoWm9EVW1Dcks1X2piT3lsdkpMbWwxVmhyMFUxM3lmTTJHVUhxcHgydVNJYURqa3R5WG1QeDA4Z3BpWmdaYnpGemgtOXo0eGJNZEZqbjJQRXJNZkxzSkUwQmpmaDlXaw?oc=5"
+        },
+        {
+          title: "LG전자, AI 가전·히트펌프·태양광 결합한 에너지 자립형 주택 선보여 - 인공지능신문",
+          pubDate: "Wed, 14 Oct 2026 07:00:00 GMT",
+          link: "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE9SeG4tN3YyMlJuT19XNkloSTdrVjBoUXd4d240ZUZvYWYyR2RXRkZRQndYV1VFUlNjWmN2NTlOVmhobkFSVUJSRG5LdjhHdHFvV2plaHVHQkcyTXM5ZlZkbGRvSHo0b0E?oc=5"
+        },
+        {
+          title: "LG전자, AI 가전·HVAC 결합한 미래형 주택 선봬 - 매일일보",
+          pubDate: "Wed, 14 Oct 2026 07:00:00 GMT",
+          link: "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9UTEpOZ2xwZTFQbHF1czhvQ3M0d1RPVmktWFMwQmI1RTFlYmtDMXJYeXJpUFVLWXJHQWZSaDEwd1k1bUNSNzdPX0tacC1pcHB6TEtoSTM2aVVKVHlkQU9XRENDcXo?oc=5"
+        },
+        {
+          title: "AI 가전 경쟁 2막…삼성ㆍLG전자, ‘스스로 판단하는 AI’ 승부 - 아이티데일리",
+          pubDate: "Thu, 09 Jul 2026 07:00:00 GMT",
+          link: "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9kWGw3cDIzS3ZzcTZlbjhMUTFyRVEwZlhxeGV5dXFhTlhQRDRodnN4RzlaMGNaOTR1dU0yRDZSUktVazdSd0QxWXRHT2pGY3BCeFA3TDFiSUs5ODZmc3hwWU5jNEZ3QVgw?oc=5"
+        }
+      ]
+    };
+
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const navItems = document.querySelectorAll('.nav-item');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const pageCounter = document.getElementById('pageCounter');
+    const breadcrumb = document.getElementById('currentSlideBreadcrumb');
+    const totalSlides = slides.length;
+
+    function pad2(n) {
+      return n < 10 ? '0' + n : String(n);
+    }
+
+    function updateDeck() {
+      slides.forEach((slide, idx) => {
+        slide.classList.toggle('active', idx === currentSlide);
+      });
+      navItems.forEach((item, idx) => {
+        item.classList.toggle('active', idx === currentSlide);
+      });
+      pageCounter.innerHTML = '<span>' + pad2(currentSlide + 1) + '</span> / ' + pad2(totalSlides);
+      if (breadcrumb) {
+        breadcrumb.textContent = slides[currentSlide].getAttribute('data-title');
+      }
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === totalSlides - 1;
+    }
+
+    function changeSlide(delta) {
+      const next = currentSlide + delta;
+      if (next >= 0 && next < totalSlides) {
+        currentSlide = next;
+        updateDeck();
+      }
+    }
+
+    function goToSlide(index) {
+      currentSlide = index;
+      updateDeck();
+    }
+
+    async function syncLiveMarketData() {
+      const btn = document.getElementById('liveSyncBtn');
+      const statusBadge = document.getElementById('sidebarApiStatus');
+      if (btn) btn.textContent = '동기화 중...';
+      try {
+        const res = await fetch('https://api.frankfurter.dev/v1/latest?base=USD&symbols=KRW,EUR');
+        if (res.ok) {
+          const fx = await res.json();
+          const krw = Number(fx.rates.KRW).toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          const eur = Number(fx.rates.EUR).toFixed(4);
+          const eurKrw = Number(fx.rates.KRW / fx.rates.EUR).toLocaleString('ko-KR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          document.getElementById('sidebarUsdKrw').textContent = krw;
+          document.getElementById('slideUsdKrw').textContent = krw + '원';
+          document.getElementById('slideUsdEur').textContent = eur;
+          document.getElementById('slideEurKrw').textContent = '1 EUR ≈ ' + eurKrw + ' KRW';
+          if (statusBadge) statusBadge.textContent = 'SYNCED';
+        }
+      } catch (_) {
+        if (statusBadge) statusBadge.textContent = 'CACHED';
+      } finally {
+        if (btn) btn.textContent = '실시간 환율 API 동기화 완료 ✓';
+        setTimeout(() => {
+          if (btn) btn.textContent = '실시간 환율 API 동기화 ↻';
+        }, 2500);
+      }
+    }
+
+    let isCleanedMode = false;
+    function toggleCleanMargin() {
+      isCleanedMode = !isCleanedMode;
+      const btn = document.getElementById('cleanToggleBtn');
+      const modeLabel = document.getElementById('marginModeLabel');
+      const totalMarginVal = document.getElementById('totalMarginVal');
+      const totalMarginSub = document.getElementById('totalMarginSub');
+      const stanbyName = document.getElementById('stanbyName');
+      const stanbyBar = document.getElementById('stanbyBar');
+      const stanbyStat = document.getElementById('stanbyStat');
+
+      if (isCleanedMode) {
+        btn.textContent = '원본 데이터 보기 (920건 전체) ↺';
+        modeLabel.textContent = '기준: 이상치 정제 완료 (902건)';
+        totalMarginVal.textContent = '30.1%';
+        totalMarginVal.style.color = 'var(--lg-red)';
+        totalMarginSub.textContent = '시제품 0원 18건 제외 실질 마진';
+        stanbyName.classList.add('accent');
+        stanbyBar.classList.add('accent');
+        stanbyStat.textContent = '196.9억 (30.1%)';
+        stanbyStat.classList.add('accent');
+      } else {
+        btn.textContent = '이상치 정제 보기 (시제품 0원 18건 보정)';
+        modeLabel.textContent = '기준: 전체 920건 (원본)';
+        totalMarginVal.textContent = '29.4%';
+        totalMarginVal.style.color = 'var(--text-title)';
+        totalMarginSub.textContent = '시제품 0원 제외 시 30.1%';
+        stanbyName.classList.remove('accent');
+        stanbyBar.classList.remove('accent');
+        stanbyStat.textContent = '196.9억 (22.4%)';
+        stanbyStat.classList.remove('accent');
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        changeSlide(1);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        changeSlide(-1);
+      }
+    });
+  </script>
+</body>
+</html>
